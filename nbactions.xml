@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <Env.JAVA_TOOL_OPTIONS>-Dfile.encoding=UTF-8</Env.JAVA_TOOL_OPTIONS>
+            <Env.MAVEN_OPTS>-Dfile.encoding=UTF-8</Env.MAVEN_OPTS>
+        </properties>
+    </action>
+    <action>
+        <actionName>debug</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <Env.JAVA_TOOL_OPTIONS>-Dfile.encoding=UTF-8</Env.JAVA_TOOL_OPTIONS>
+            <Env.MAVEN_OPTS>-Dfile.encoding=UTF-8</Env.MAVEN_OPTS>
+            <spring-boot.run.jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${jpda.address}</spring-boot.run.jvmArguments>
+            <jpda.listen>true</jpda.listen>
+        </properties>
+    </action>
+    <action>
+        <actionName>run.single.main</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <Env.JAVA_TOOL_OPTIONS>-Dfile.encoding=UTF-8</Env.JAVA_TOOL_OPTIONS>
+            <Env.MAVEN_OPTS>-Dfile.encoding=UTF-8</Env.MAVEN_OPTS>
+        </properties>
+    </action>
+</actions>

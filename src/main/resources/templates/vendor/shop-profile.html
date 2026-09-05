@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Thông Tin Cửa Hàng - Vendor')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-lg rounded-4 p-4 bg-white">
+                    <h3 class="fw-bold mb-4"><i class="fa-solid fa-store me-2 text-primary"></i>Quản Lý Thông Tin Cửa Hàng</h3>
+
+                    <form action="/vendor/shop/update" method="post">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên cửa hàng *</label>
+                            <input type="text" name="name" class="form-control" th:value="${shop.name}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mô tả cửa hàng</label>
+                            <textarea name="description" class="form-control" rows="3" th:text="${shop.description}"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Số điện thoại liên hệ *</label>
+                                <input type="text" name="contactPhone" class="form-control" th:value="${shop.contactPhone}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">URL Logo cửa hàng</label>
+                                <input type="text" name="logoUrl" class="form-control" th:value="${shop.logoUrl}">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Địa chỉ cửa hàng *</label>
+                            <input type="text" name="address" class="form-control" th:value="${shop.address}" required>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4"><i class="fa-solid fa-floppy-disk me-1"></i>Lưu Thay Đổi</button>
+                            <a href="/vendor/dashboard" class="btn btn-outline-secondary rounded-pill px-4">Quay lại Dashboard</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

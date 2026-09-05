@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Quản Lý Người Dùng - Admin')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-4">
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-pills mb-4 gap-2">
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/admin/dashboard"><i class="fa-solid fa-chart-line me-2 text-info"></i>Tổng Quan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/admin/vendors"><i class="fa-solid fa-store me-2 text-primary"></i>Duyệt Cửa Hàng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/admin/categories"><i class="fa-solid fa-layer-group me-2 text-success"></i>Danh Mục Sản Phẩm</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active rounded-pill px-4" href="/admin/users"><i class="fa-solid fa-users me-2"></i>Người Dùng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/admin/orders"><i class="fa-solid fa-receipt me-2 text-danger"></i>Toàn Bộ Đơn Hàng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/admin/settings"><i class="fa-solid fa-gear me-2 text-secondary"></i>Cấu Hình Website</a>
+            </li>
+        </ul>
+
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <h4 class="fw-bold mb-4"><i class="fa-solid fa-users me-2 text-warning"></i>Quản Lý Tài Khoản Người Dùng (<span th:text="${users.size()}">0</span>)</h4>
+
+            <div class="table-responsive">
+                <table class="table align-middle table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Họ và Tên</th>
+                            <th>Email</th>
+                            <th>Số Điện Thoại</th>
+                            <th>Vai Trò (Role)</th>
+                            <th>Trạng Thái</th>
+                            <th class="text-end">Khóa / Mở Khóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}">1</td>
+                            <td class="fw-bold" th:text="${user.username}">username</td>
+                            <td th:text="${user.fullName}">Full Name</td>
+                            <td th:text="${user.email}">Email</td>
+                            <td th:text="${user.phone}">Phone</td>
+                            <td>
+                                <span class="badge"
+                                      th:classappend="${user.role.name() == 'ROLE_ADMIN' ? 'bg-danger' : (user.role.name() == 'ROLE_VENDOR' ? 'bg-primary' : 'bg-secondary')}"
+                                      th:text="${user.role}">ROLE_CUSTOMER</span>
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="${user.enabled ? 'bg-success' : 'bg-dark'}"
+                                      th:text="${user.enabled ? 'Hoạt động' : 'Đã khóa'}">Hoạt động</span>
+                            </td>
+                            <td class="text-end">
+                                <form th:action="@{/admin/users/toggle-status/{id}(id=${user.id})}" method="post" th:if="${user.role.name() != 'ROLE_ADMIN'}">
+                                    <button type="submit" class="btn btn-sm rounded-pill"
+                                            th:classappend="${user.enabled ? 'btn-outline-danger' : 'btn-outline-success'}"
+                                            th:text="${user.enabled ? 'Khóa TK' : 'Mở Khóa'}">Toggle</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Quản Lý Sản Phẩm - Vendor')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-4">
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-pills mb-4 gap-2">
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/vendor/dashboard"><i class="fa-solid fa-chart-line me-2 text-info"></i>Tổng Quan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active rounded-pill px-4" href="/vendor/products"><i class="fa-solid fa-box me-2"></i>Sản Phẩm Của Tôi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/vendor/orders"><i class="fa-solid fa-clipboard-list me-2 text-success"></i>Đơn Hàng Bán Ra</a>
+            </li>
+        </ul>
+
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0"><i class="fa-solid fa-boxes-stacked me-2 text-primary"></i>Danh Sách Sản Phẩm (<span th:text="${products.size()}">0</span>)</h4>
+                <a href="/vendor/products/new" class="btn btn-primary rounded-pill"><i class="fa-solid fa-plus me-1"></i>Thêm Sản Phẩm Mới</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table align-middle table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Hình Ảnh</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Danh Mục</th>
+                            <th>Giá Bán</th>
+                            <th>Số Lượng Kho</th>
+                            <th>Trạng Thái</th>
+                            <th class="text-end">Thao Tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.id}">1</td>
+                            <td>
+                                <img th:src="${product.imageUrl}" class="rounded-3" style="width: 50px; height: 50px; object-fit: cover;" alt="Product">
+                            </td>
+                            <td class="fw-bold" th:text="${product.name}">Product Name</td>
+                            <td>
+                                <span class="badge bg-secondary" th:text="${product.category.name}">Category</span>
+                            </td>
+                            <td class="text-danger fw-bold" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0</td>
+                            <td class="fw-bold" th:text="${product.stockQuantity}">0</td>
+                            <td>
+                                <span class="badge" th:classappend="${product.status.name() == 'ACTIVE' ? 'bg-success' : 'bg-secondary'}" th:text="${product.status}">ACTIVE</span>
+                            </td>
+                            <td class="text-end">
+                                <a th:href="@{/vendor/products/edit/{id}(id=${product.id})}" class="btn btn-sm btn-outline-primary rounded-pill me-1"><i class="fa-solid fa-pen me-1"></i>Sửa</a>
+                                <form th:action="@{/vendor/products/delete/{id}(id=${product.id})}" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill"><i class="fa-solid fa-trash me-1"></i>Xóa</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

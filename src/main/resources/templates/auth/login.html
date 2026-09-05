@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Đăng Nhập')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card border-0 shadow-lg rounded-4 p-4 bg-white">
+                    <div class="text-center mb-4">
+                        <i class="fa-solid fa-circle-user text-primary display-4 mb-2"></i>
+                        <h3 class="fw-bold">Đăng Nhập Hệ Thống</h3>
+                        <p class="text-muted small">Nhập tài khoản để tiếp tục mua sắm hoặc quản lý cửa hàng</p>
+                    </div>
+
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i>Tên đăng nhập hoặc mật khẩu không chính xác!
+                    </div>
+                    <div th:if="${param.logout}" class="alert alert-info">
+                        <i class="fa-solid fa-circle-info me-2"></i>Bạn đã đăng xuất khỏi hệ thống.
+                    </div>
+
+                    <form action="/login" method="post">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên đăng nhập</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                                <input type="text" name="username" class="form-control" placeholder="Nhập username" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Mật khẩu</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                                <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold mb-3 shadow-sm">
+                            <i class="fa-solid fa-right-to-bracket me-2"></i>Đăng Nhập
+                        </button>
+                    </form>
+
+                    <div class="text-center">
+                        <p class="mb-1 text-muted">Chưa có tài khoản người mua? <a href="/register" class="text-primary text-decoration-none fw-bold">Đăng ký ngay</a></p>
+                        <p class="mb-0 text-muted">Muốn bán hàng trên sàn? <a href="/vendor-register" class="text-success text-decoration-none fw-bold">Mở cửa hàng</a></p>
+                    </div>
+
+                    <!-- Demo Credentials Helper -->
+                    <div class="mt-4 p-3 bg-light rounded-3 text-start small border">
+                        <p class="fw-bold mb-2 text-dark"><i class="fa-solid fa-key me-2 text-warning"></i>Tài khoản dùng thử có sẵn:</p>
+                        <ul class="mb-0 ps-3 text-secondary">
+                            <li><strong>Admin:</strong> <code>admin</code> / <code>admin123</code></li>
+                            <li><strong>Vendor 1 (Công Nghệ 247):</strong> <code>vendor1</code> / <code>vendor123</code></li>
+                            <li><strong>Vendor 2 (Thời Trang Chic):</strong> <code>vendor2</code> / <code>vendor123</code></li>
+                            <li><strong>Customer:</strong> <code>customer1</code> / <code>customer123</code></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

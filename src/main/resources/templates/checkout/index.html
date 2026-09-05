@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Xác Nhận Đặt Hàng & Thanh Toán')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-5">
+        <h3 class="fw-bold mb-4"><i class="fa-solid fa-truck-fast me-2 text-primary"></i>Xác Nhận Đơn Hàng & Thanh Toán</h3>
+
+        <form action="/checkout/process" method="post">
+            <div class="row g-4">
+                <!-- Left Side: Shipping & Payment Information -->
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                        <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-location-dot me-2"></i>1. Thông Tin Nhận Hàng</h5>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Họ và tên người nhận *</label>
+                            <input type="text" name="recipientName" class="form-control" th:value="${user.fullName}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Số điện thoại nhận hàng *</label>
+                            <input type="text" name="phone" class="form-control" th:value="${user.phone}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Địa chỉ giao hàng chi tiết *</label>
+                            <input type="text" name="address" class="form-control" placeholder="Số nhà, Tên đường, Phường/Xã, Quận/Huyện, Tỉnh/TP" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Ghi chú giao hàng</label>
+                            <textarea name="note" class="form-control" rows="2" placeholder="Ghi chú thêm về thời gian nhận hàng hoặc hướng dẫn giao hàng..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                        <h5 class="fw-bold mb-3 text-success"><i class="fa-solid fa-credit-card me-2"></i>2. Phương Thức Thanh Toán</h5>
+                        
+                        <div class="form-check p-3 border rounded-3 mb-2 bg-light">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" checked>
+                            <label class="form-check-input-label fw-bold ms-2" for="cod">
+                                <i class="fa-solid fa-money-bill-wave text-success me-2"></i>Thanh toán khi nhận hàng (COD)
+                            </label>
+                            <div class="small text-muted ms-4">Thanh toán bằng tiền mặt trực tiếp cho nhân viên giao hàng khi nhận sản phẩm.</div>
+                        </div>
+
+                        <div class="form-check p-3 border rounded-3 bg-light">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="vnpay" value="VNPAY">
+                            <label class="form-check-input-label fw-bold ms-2" for="vnpay">
+                                <i class="fa-solid fa-qrcode text-primary me-2"></i>Chuyển khoản Ngân hàng / Quét mã QR VNPay / MOMO
+                            </label>
+                            <div class="small text-muted ms-4">Quét mã QR qua ứng dụng ngân hàng hoặc ví điện tử an toàn và nhanh chóng.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Order Summary Breakdown -->
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 90px;">
+                        <h5 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-receipt me-2"></i>Chi Tiết Đơn Hàng</h5>
+                        
+                        <div th:each="entry : ${cart.itemsGroupedByShop}" class="mb-3 border-bottom pb-2">
+                            <div class="fw-bold text-primary mb-2">
+                                <i class="fa-solid fa-store me-1"></i><span th:text="${entry.key.name}">Shop Name</span>
+                            </div>
+                            <div th:each="item : ${entry.value}" class="d-flex justify-content-between align-items-center mb-2 ms-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <img th:src="${item.product.imageUrl}" class="rounded-2" style="width: 35px; height: 35px; object-fit: cover;" alt="Product">
+                                    <div>
+                                        <div class="small fw-bold text-truncate" style="max-width: 170px;" th:text="${item.product.name}">Product</div>
+                                        <small class="text-muted">x<span th:text="${item.quantity}">1</span></small>
+                                    </div>
+                                </div>
+                                <span class="fw-bold text-danger small" th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Tổng tiền hàng:</span>
+                            <span class="fw-bold" th:text="${#numbers.formatDecimal(cart.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Phí vận chuyển:</span>
+                            <span class="text-success fw-bold">MIỄN PHÍ</span>
+                        </div>
+
+                        <hr>
+                        <div class="d-flex justify-content-between mb-4 fs-5">
+                            <span class="fw-bold">Tổng thanh toán:</span>
+                            <span class="text-danger fw-bold" th:text="${#numbers.formatDecimal(cart.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</span>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold shadow-sm">
+                            <i class="fa-solid fa-check-circle me-2"></i>Xác Nhận & Đặt Hàng
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

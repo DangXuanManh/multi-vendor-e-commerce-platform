@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Kênh Người Bán - Dashboard')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-4">
+        <!-- Vendor Header -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary text-white rounded-circle p-3 fs-2">
+                        <i class="fa-solid fa-shop"></i>
+                    </div>
+                    <div>
+                        <h3 class="fw-bold mb-0" th:text="${shop.name}">Tên Shop</h3>
+                        <span class="badge" th:classappend="${shop.status.name() == 'APPROVED' ? 'bg-success' : 'bg-warning text-dark'}" th:text="'Trạng Thái Shop: ' + ${shop.status}">APPROVED</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="/vendor/products/new" class="btn btn-primary rounded-pill"><i class="fa-solid fa-plus me-1"></i>Thêm Sản Phẩm Mới</a>
+                    <a href="/vendor/shop" class="btn btn-outline-secondary rounded-pill"><i class="fa-solid fa-gear me-1"></i>Sửa Thông Tin Shop</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warning Alert if Shop Pending -->
+        <div th:if="${shop.status.name() == 'PENDING'}" class="alert alert-warning rounded-4 shadow-sm mb-4">
+            <i class="fa-solid fa-triangle-exclamation me-2 fs-5"></i>
+            <strong>Cửa hàng đang chờ duyệt!</strong> Đơn đăng ký của bạn đang được ADMIN xem xét. Bạn sẽ có thể đăng bán sản phẩm chính thức ngay sau khi được duyệt.
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-pills mb-4 gap-2">
+            <li class="nav-item">
+                <a class="nav-link active rounded-pill px-4" href="/vendor/dashboard"><i class="fa-solid fa-chart-line me-2"></i>Tổng Quan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/vendor/products"><i class="fa-solid fa-box me-2 text-primary"></i>Sản Phẩm Của Tôi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/vendor/orders"><i class="fa-solid fa-clipboard-list me-2 text-success"></i>Đơn Hàng Bán Ra</a>
+            </li>
+        </ul>
+
+        <!-- Metric Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center">
+                    <i class="fa-solid fa-sack-dollar text-success fs-1 mb-2"></i>
+                    <p class="text-muted mb-1 fw-bold">Tổng Doanh Thu Shop</p>
+                    <h3 class="fw-bold text-success" th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center">
+                    <i class="fa-solid fa-boxes-stacked text-primary fs-1 mb-2"></i>
+                    <p class="text-muted mb-1 fw-bold">Tổng Số Sản Phẩm</p>
+                    <h3 class="fw-bold text-primary" th:text="${productCount}">0</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center">
+                    <i class="fa-solid fa-cart-flatbed text-warning fs-1 mb-2"></i>
+                    <p class="text-muted mb-1 fw-bold">Đơn Hàng Nhận Được</p>
+                    <h3 class="fw-bold text-warning" th:text="${orderCount}">0</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

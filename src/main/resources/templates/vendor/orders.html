@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Đơn Hàng Bán Ra - Vendor')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-4">
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-pills mb-4 gap-2">
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/vendor/dashboard"><i class="fa-solid fa-chart-line me-2 text-info"></i>Tổng Quan</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/vendor/products"><i class="fa-solid fa-box me-2 text-primary"></i>Sản Phẩm Của Tôi</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active rounded-pill px-4" href="/vendor/orders"><i class="fa-solid fa-clipboard-list me-2"></i>Đơn Hàng Bán Ra</a>
+            </li>
+        </ul>
+
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+            <h4 class="fw-bold mb-4"><i class="fa-solid fa-clipboard-list me-2 text-success"></i>Quản Lý Đơn Hàng Của Cửa Hàng (<span th:text="${orderItems.size()}">0</span>)</h4>
+
+            <div class="table-responsive">
+                <table class="table align-middle table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Mã Đơn</th>
+                            <th>Ngày Đặt</th>
+                            <th>Sản Phẩm</th>
+                            <th>Số Lượng</th>
+                            <th>Doanh Thu Item</th>
+                            <th>Khách Hàng & Giao Hàng</th>
+                            <th>Trạng Thái Giao Hàng</th>
+                            <th>Cập Nhật Trạng Thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${orderItems}">
+                            <td><strong th:text="'#' + ${item.order.id}">#1</strong></td>
+                            <td class="small text-muted" th:text="${#temporals.format(item.order.orderDate, 'dd-MM-yyyy HH:mm')}">Date</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <img th:src="${item.product.imageUrl}" class="rounded-2" style="width: 40px; height: 40px; object-fit: cover;" alt="Product">
+                                    <span class="fw-bold" th:text="${item.product.name}">Product Name</span>
+                                </div>
+                            </td>
+                            <td class="text-center fw-bold" th:text="${item.quantity}">1</td>
+                            <td class="text-danger fw-bold" th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0</td>
+                            <td class="small">
+                                <div class="fw-bold" th:text="${item.order.recipientName}">Nguyễn Văn A</div>
+                                <div th:text="${item.order.recipientPhone}">0901234567</div>
+                                <div class="text-muted text-truncate" style="max-width: 150px;" th:text="${item.order.shippingAddress}">Địa chỉ</div>
+                            </td>
+                            <td>
+                                <span class="badge"
+                                      th:classappend="${item.status.name() == 'DELIVERED' ? 'bg-success' : (item.status.name() == 'CANCELLED' ? 'bg-danger' : (item.status.name() == 'SHIPPED' ? 'bg-primary' : 'bg-warning text-dark'))}"
+                                      th:text="${item.status}">PENDING</span>
+                            </td>
+                            <td>
+                                <form action="/vendor/orders/update-status" method="post" class="d-flex gap-1">
+                                    <input type="hidden" name="orderItemId" th:value="${item.id}">
+                                    <select name="status" class="form-select form-select-sm">
+                                        <option value="PENDING" th:selected="${item.status.name() == 'PENDING'}">PENDING (Chờ)</option>
+                                        <option value="PROCESSING" th:selected="${item.status.name() == 'PROCESSING'}">PROCESSING (Chuẩn bị)</option>
+                                        <option value="SHIPPED" th:selected="${item.status.name() == 'SHIPPED'}">SHIPPED (Đang giao)</option>
+                                        <option value="DELIVERED" th:selected="${item.status.name() == 'DELIVERED'}">DELIVERED (Đã giao)</option>
+                                        <option value="CANCELLED" th:selected="${item.status.name() == 'CANCELLED'}">CANCELLED (Hủy)</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-primary rounded-pill"><i class="fa-solid fa-check"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

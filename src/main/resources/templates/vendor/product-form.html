@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head(${product.id != null ? 'Chỉnh Sửa Sản Phẩm' : 'Thêm Sản Phẩm Mới'})}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card border-0 shadow-lg rounded-4 p-4 bg-white">
+                    <h3 class="fw-bold mb-4">
+                        <i class="fa-solid fa-box text-primary me-2"></i>
+                        <span th:text="${product.id != null ? 'Chỉnh Sửa Sản Phẩm #' + product.id : 'Thêm Sản Phẩm Mới Mới'}">Thêm Sản Phẩm</span>
+                    </h3>
+
+                    <form action="/vendor/products/save" method="post" th:object="${product}">
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên sản phẩm *</label>
+                            <input type="text" th:field="*{name}" class="form-control" placeholder="Nhập tên sản phẩm" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Danh mục *</label>
+                                <select name="categoryId" class="form-select" required>
+                                    <option value="" disabled selected>-- Chọn danh mục --</option>
+                                    <option th:each="cat : ${categories}"
+                                            th:value="${cat.id}"
+                                            th:text="${cat.name}"
+                                            th:selected="${product.category != null and product.category.id == cat.id}">Danh mục</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Trạng thái</label>
+                                <select th:field="*{status}" class="form-select">
+                                    <option value="ACTIVE">Hoạt Động (ACTIVE)</option>
+                                    <option value="INACTIVE">Tạm Ngưng (INACTIVE)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Giá bán (VNĐ) *</label>
+                                <input type="number" step="1000" th:field="*{price}" class="form-control" placeholder="VNĐ" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Số lượng tồn kho *</label>
+                                <input type="number" th:field="*{stockQuantity}" class="form-control" placeholder="Số lượng" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">URL Hình ảnh sản phẩm</label>
+                            <input type="text" th:field="*{imageUrl}" class="form-control" placeholder="https://example.com/image.jpg">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Mô tả sản phẩm</label>
+                            <textarea th:field="*{description}" class="form-control" rows="4" placeholder="Mô tả thông số, đặc điểm nổi bật của sản phẩm..."></textarea>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary rounded-pill px-4"><i class="fa-solid fa-floppy-disk me-1"></i>Lưu Sản Phẩm</button>
+                            <a href="/vendor/products" class="btn btn-outline-secondary rounded-pill px-4">Hủy bỏ</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

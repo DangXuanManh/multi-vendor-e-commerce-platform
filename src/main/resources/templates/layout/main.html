@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' - ' + (${siteSetting != null ? siteSetting.siteName : 'Sàn TMĐT'})">Sàn Thương Mại Điện Tử</title>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome 6 Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Distinct Royal Blue & Slate Palette */
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+            --bg-body: #f8fafc;
+            --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            --card-hover-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+            --border-radius: 12px;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+        }
+
+        /* Royal Blue Navbar UI */
+        .navbar-custom {
+            background-color: #ffffff !important;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 10px 0;
+        }
+
+        .navbar-brand-title {
+            font-weight: 800;
+            color: var(--primary-color) !important;
+            letter-spacing: -0.5px;
+        }
+
+        .search-pill-input {
+            border-radius: 50rem 0 0 50rem !important;
+            padding-left: 20px;
+            border: 2px solid var(--primary-color);
+            background-color: #ffffff;
+            color: #0f172a !important;
+        }
+        .search-pill-input:focus {
+            box-shadow: none;
+            border-color: var(--primary-hover);
+        }
+        .search-pill-btn {
+            border-radius: 0 50rem 50rem 0 !important;
+            padding-right: 22px;
+            background-color: var(--primary-color) !important;
+            border: 2px solid var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+        .search-pill-btn:hover {
+            background-color: var(--primary-hover) !important;
+            border-color: var(--primary-hover) !important;
+        }
+
+        /* Checkbox & Radio Royal Blue Styling */
+        .form-check-input:checked {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+        }
+
+        /* Card Modern Design */
+        .card-product {
+            transition: all 0.25s ease-in-out;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .card-product:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--card-hover-shadow);
+            border-color: #93c5fd;
+        }
+
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.4s ease;
+        }
+
+        .card-product:hover .product-img {
+            transform: scale(1.03);
+        }
+
+        .product-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            background-color: #f1f5f9;
+        }
+
+        .shop-badge {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .price-text {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Category Card Hover */
+        .category-card {
+            transition: all 0.25s ease;
+            border-radius: var(--border-radius);
+            border: 1px solid #e2e8f0;
+        }
+        .category-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.12);
+            border-color: var(--primary-color);
+        }
+
+        /* Royal Blue Buttons */
+        .btn-primary, .btn-blue {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        .btn-primary:hover, .btn-blue:hover {
+            background-color: var(--primary-hover) !important;
+            border-color: var(--primary-hover) !important;
+        }
+
+        .btn-outline-primary, .btn-outline-blue {
+            color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            font-weight: 600;
+        }
+        .btn-outline-primary:hover, .btn-outline-blue:hover {
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+
+        /* Footer Styling (Thương hiệu TMDD Marketplace) */
+        .footer-tmdd {
+            background-color: #fbfbfb;
+            color: rgba(0, 0, 0, 0.65);
+            font-size: 0.75rem;
+            border-top: 4px solid var(--primary-color);
+            margin-top: 60px;
+        }
+        .footer-tmdd h6 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: rgba(0, 0, 0, 0.87);
+            text-uppercase: uppercase;
+            margin-bottom: 15px;
+        }
+        .footer-tmdd a {
+            color: rgba(0, 0, 0, 0.65);
+            text-decoration: none;
+        }
+        .footer-tmdd a:hover {
+            color: var(--primary-color);
+        }
+        .footer-logo-box {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            padding: 4px 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.7rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light navbar-custom sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fs-3 d-flex align-items-center gap-2" href="/">
+                <img th:if="${siteSetting != null and siteSetting.logoUrl != null and !siteSetting.logoUrl.isEmpty()}"
+                     th:src="${siteSetting.logoUrl}" alt="Logo" class="rounded-circle shadow-sm" style="width: 38px; height: 38px; object-fit: cover;">
+                <i th:if="${siteSetting == null or siteSetting.logoUrl == null or siteSetting.logoUrl.isEmpty()}" class="fa-solid fa-bag-shopping" style="color: var(--primary-color);"></i>
+                <span class="navbar-brand-title" th:text="${siteSetting != null ? siteSetting.siteName : 'JVTECH MARKETPLACE'}">JVTECH MARKETPLACE</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <!-- Search Bar -->
+                <form class="d-flex mx-auto my-2 my-lg-0 w-50" action="/products" method="get">
+                    <input class="form-control search-pill-input" type="search" name="keyword" th:value="${param.keyword}" placeholder="Tìm kiếm sản phẩm, thương hiệu, shop uy tín..." aria-label="Search">
+                    <button class="btn search-pill-btn px-3" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link text-slate-700 fw-semibold" href="/products"><i class="fa-solid fa-store me-1" style="color: var(--primary-color);"></i>Sản Phẩm</a>
+                    </li>
+                    <li class="nav-item me-2">
+                        <a class="nav-link position-relative p-2" href="/cart">
+                            <i class="fa-solid fa-cart-shopping fs-5 text-slate-700"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-circle"
+                                  style="font-size: 0.7rem; padding: 4px 6px; background-color: var(--primary-color) !important; color: #fff;"
+                                  th:if="${session.CURRENT_CART != null and session.CURRENT_CART.totalQuantity > 0}"
+                                  th:text="${session.CURRENT_CART.totalQuantity}">0</span>
+                        </a>
+                    </li>
+
+                    <!-- Anonymous User -->
+                    <li class="nav-item ms-2" sec:authorize="isAnonymous()">
+                        <a class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold" href="/login"><i class="fa-solid fa-right-to-bracket me-1"></i>Đăng Nhập</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="btn btn-primary btn-sm rounded-pill px-3 fw-semibold shadow-sm" href="/register"><i class="fa-solid fa-user-plus me-1"></i>Đăng Ký</a>
+                    </li>
+
+                    <!-- Authenticated User Menu -->
+                    <li class="nav-item dropdown ms-2" sec:authorize="isAuthenticated()">
+                        <a class="nav-link dropdown-toggle text-slate-800 fw-semibold bg-slate-100 rounded-pill px-3 py-1 border" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-circle-user me-1 text-primary"></i>
+                            <span sec:authentication="name">User</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4 mt-2">
+                            <li sec:authorize="hasAuthority('ROLE_ADMIN')">
+                                <a class="dropdown-item fw-bold text-danger py-2" href="/admin/dashboard"><i class="fa-solid fa-user-shield me-2"></i>Trang Admin</a>
+                            </li>
+                            <li sec:authorize="hasAuthority('ROLE_VENDOR')">
+                                <a class="dropdown-item fw-bold text-primary py-2" href="/vendor/dashboard"><i class="fa-solid fa-store me-2"></i>Quản Lý Shop</a>
+                            </li>
+                            <li sec:authorize="hasAuthority('ROLE_CUSTOMER')">
+                                <a class="dropdown-item py-2" href="/customer/orders"><i class="fa-solid fa-receipt me-2 text-primary"></i>Đơn Hàng Của Tôi</a>
+                            </li>
+                            <li sec:authorize="!hasAuthority('ROLE_VENDOR') and !hasAuthority('ROLE_ADMIN')">
+                                <a class="dropdown-item text-success fw-bold py-2" href="/vendor-register"><i class="fa-solid fa-shop me-2"></i>Đăng Ký Bán Hàng</a>
+                            </li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                            <li>
+                                <form th:action="@{/logout}" method="post" class="d-inline">
+                                    <button class="dropdown-item text-danger py-2" type="submit"><i class="fa-solid fa-right-from-bracket me-2"></i>Đăng Xuất</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Global Alerts -->
+    <div class="container mt-3" th:fragment="alerts">
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm border-0 bg-emerald-50 text-emerald-800" role="alert">
+            <i class="fa-solid fa-circle-check me-2 text-emerald-600"></i><span th:text="${successMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show rounded-4 shadow-sm border-0 bg-rose-50 text-rose-800" role="alert">
+            <i class="fa-solid fa-circle-xmark me-2 text-rose-600"></i><span th:text="${errorMessage}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+
+    <!-- Footer (Thương hiệu JVTech Marketplace) -->
+    <footer th:fragment="footer" class="footer-tmdd py-5">
+        <div class="container">
+            <!-- 5 Columns Header Section -->
+            <div class="row g-4 pb-4 border-bottom">
+                <div class="col-6 col-md-2">
+                    <h6>CHĂM SÓC KHÁCH HÀNG</h6>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-1">
+                        <li><a href="#">Trung Tâm Trợ Giúp</a></li>
+                        <li><a href="#">JVTech Blog</a></li>
+                        <li><a href="#">JVTech Mall</a></li>
+                        <li><a href="#">Hướng Dẫn Mua Hàng</a></li>
+                        <li><a href="#">Hướng Dẫn Bán Hàng</a></li>
+                        <li><a href="#">Thanh Toán</a></li>
+                        <li><a href="#">JVTech Xu</a></li>
+                        <li><a href="#">Vận Chuyển</a></li>
+                        <li><a href="#">Trả Hàng &amp; Hoàn Tiền</a></li>
+                        <li><a href="#">Chăm Sóc Khách Hàng</a></li>
+                        <li><a href="#">Chính Sách Bảo Hành</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <h6>VỀ JVTECH MARKETPLACE</h6>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-1">
+                        <li><a href="#">Giới Thiệu Về JVTech Marketplace</a></li>
+                        <li><a href="#">Tuyển Dụng</a></li>
+                        <li><a href="#">Điều Khoản JVTech</a></li>
+                        <li><a href="#">Chính Sách Bảo Mật</a></li>
+                        <li><a href="#">Chính Hãng</a></li>
+                        <li><a href="#">Kênh Người Bán</a></li>
+                        <li><a href="#">Flash Deals</a></li>
+                        <li><a href="#">Chương Trình Tiếp Thị Liên Kết</a></li>
+                        <li><a href="#">Liên Hệ Với Truyền Thông</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <h6>THANH TOÁN</h6>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="footer-logo-box text-primary"><i class="fa-brands fa-cc-visa me-1"></i>VISA</span>
+                        <span class="footer-logo-box text-warning"><i class="fa-brands fa-cc-mastercard me-1"></i>MasterCard</span>
+                        <span class="footer-logo-box text-info"><i class="fa-brands fa-cc-jcb me-1"></i>JCB</span>
+                        <span class="footer-logo-box text-success"><i class="fa-brands fa-cc-amex me-1"></i>AMEX</span>
+                        <span class="footer-logo-box text-primary">JVTechPay</span>
+                    </div>
+
+                    <h6>ĐƠN VỊ VẬN CHUYỂN</h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="footer-logo-box text-primary">JVTech Express</span>
+                        <span class="footer-logo-box text-danger">NinjaVan</span>
+                        <span class="footer-logo-box text-primary">ViettelPost</span>
+                        <span class="footer-logo-box text-success">GHTK</span>
+                        <span class="footer-logo-box text-warning">J&amp;T Express</span>
+                        <span class="footer-logo-box">GrabExpress</span>
+                        <span class="footer-logo-box text-info">Be</span>
+                        <span class="footer-logo-box">VietnamPost</span>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <h6>THEO DÕI CHÚNG TÔI TRÊN</h6>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+                        <li><a href="#" class="d-flex align-items-center gap-2"><i class="fa-brands fa-facebook text-primary fs-6"></i>Facebook</a></li>
+                        <li><a href="#" class="d-flex align-items-center gap-2"><i class="fa-brands fa-instagram text-danger fs-6"></i>Instagram</a></li>
+                        <li><a href="#" class="d-flex align-items-center gap-2"><i class="fa-brands fa-linkedin text-info fs-6"></i>LinkedIn</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <h6>TẢI ỨNG DỤNG JVTECH MARKETPLACE</h6>
+                    <div class="d-flex gap-2 align-items-center">
+                        <div class="border p-1 bg-white rounded shadow-sm">
+                            <i class="fa-solid fa-qrcode fs-1 text-slate-800"></i>
+                        </div>
+                        <div class="d-flex flex-column gap-1">
+                            <a href="#" class="btn btn-sm text-white text-start py-1 px-2 rounded-2 shadow-sm d-flex align-items-center gap-1" style="background-color: #111827; border: 1px solid #374151; font-size: 0.75rem;"><i class="fa-brands fa-apple fs-6" style="color: #ffffff !important;"></i><span style="color: #ffffff !important; font-weight: 700;">App Store</span></a>
+                            <a href="#" class="btn btn-sm text-white text-start py-1 px-2 rounded-2 shadow-sm d-flex align-items-center gap-1" style="background-color: #111827; border: 1px solid #374151; font-size: 0.75rem;"><i class="fa-brands fa-google-play fs-6" style="color: #ffffff !important;"></i><span style="color: #ffffff !important; font-weight: 700;">Google Play</span></a>
+                            <a href="#" class="btn btn-sm text-white text-start py-1 px-2 rounded-2 shadow-sm d-flex align-items-center gap-1" style="background-color: #111827; border: 1px solid #374151; font-size: 0.75rem;"><i class="fa-solid fa-bag-shopping fs-6" style="color: #ffffff !important;"></i><span style="color: #ffffff !important; font-weight: 700;">AppGallery</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Bar: Copyright & Region List -->
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 py-3 border-bottom text-muted">
+                <div>© 2026 JVTech Marketplace. Tất cả các quyền được bảo lưu.</div>
+                <div>
+                    Quốc gia &amp; Khu vực: Argentina | Singapore | Indonesia | Thái Lan | Malaysia | Việt Nam | Philippines | Brazil | México | Đài Loan
+                </div>
+            </div>
+
+            <!-- Bottom Section: Legal Policies & Registered Company Seal -->
+            <div class="text-center pt-4">
+                <div class="d-flex justify-content-center gap-4 flex-wrap mb-3 text-uppercase fw-semibold text-muted">
+                    <a href="#">Chính Sách Bảo Mật</a>
+                    <span>|</span>
+                    <a href="#">Quy Chế Hoạt Động</a>
+                    <span>|</span>
+                    <a href="#">Chính Sách Vận Chuyển</a>
+                    <span>|</span>
+                    <a href="#">Chính Sách Trả Hàng Và Hoàn Tiền</a>
+                </div>
+
+                <!-- Red Registered Ministry Badges -->
+                <div class="d-flex justify-content-center gap-3 mb-3">
+                    <span class="badge bg-primary text-white rounded-pill px-3 py-2"><i class="fa-solid fa-shield-check me-1"></i>ĐÃ ĐĂNG KÝ BỘ CÔNG THƯƠNG</span>
+                    <span class="badge bg-primary text-white rounded-pill px-3 py-2"><i class="fa-solid fa-certificate me-1"></i>ĐÃ THÔNG BÁO BỘ CÔNG THƯƠNG</span>
+                </div>
+
+                <div class="text-muted leading-relaxed" style="max-width: 800px; margin: 0 auto;">
+                    <p class="fw-bold mb-1">Công ty TNHH JVTech Marketplace</p>
+                    <p class="mb-1" th:text="${siteSetting != null ? siteSetting.address : 'Địa chỉ: Tầng 4-5-6, Tòa nhà Capital Place, số 29 đường Liễu Giai, Phường Ngọc Khánh, Quận Ba Đình, Thành phố Hà Nội, Việt Nam.'}">Địa chỉ: Tầng 4-5-6, Tòa nhà Capital Place, số 29 đường Liễu Giai, Phường Ngọc Khánh, Quận Ba Đình, Thành phố Hà Nội, Việt Nam.</p>
+                    <p class="mb-1">Chăm sóc khách hàng: Gọi tổng đài <strong class="text-primary" th:text="${siteSetting != null ? siteSetting.contactPhone : '1900 1234'}">1900 1234</strong> (miễn phí) hoặc Trò chuyện trực tuyến</p>
+                    <p class="mb-0">Mã số doanh nghiệp: 0106773786 do Sở Kế hoạch &amp; Đầu tư TP Hà Nội cấp lần đầu ngày 10/02/2015</p>
+                    <p class="mt-2 text-slate-400" th:text="${siteSetting != null ? siteSetting.footerText : '© 2015 - 2026 - Bản quyền thuộc về Công ty TNHH JVTech Marketplace'}">© 2015 - 2026 - Bản quyền thuộc về Công ty TNHH JVTech Marketplace</p>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap 5 JS Bundle -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    </footer>
+
+</body>
+</html>

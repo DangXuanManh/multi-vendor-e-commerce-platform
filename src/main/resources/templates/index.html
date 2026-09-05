@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Trang Chủ - JVTech Marketplace')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-4">
+
+        <!-- Unique Royal Blue Marketplace Top Banner -->
+        <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden" style="background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);">
+            <div class="p-4 text-white d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-white text-primary fs-6 rounded-pill px-3 py-2 fw-bold shadow-sm"><i class="fa-solid fa-store me-1"></i>PREMIUM MARKETPLACE</span>
+                    <div>
+                        <h4 class="fw-extrabold mb-1 text-white">SALES HÀNG HIỆU - GIẢM ĐẾN 40% MỖI NGÀY</h4>
+                        <small class="text-white-50">Sản phẩm chính hãng 100% - Miễn phí vận chuyển toàn quốc</small>
+                    </div>
+                </div>
+                <a href="/products" class="btn btn-light text-primary rounded-pill fw-bold px-4 shadow-sm">Khám Phá Ngay <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- Left Sidebar Filter (BỘ LỌC TÌM KIẾM Tông màu Royal Blue độc đáo) -->
+            <div class="col-lg-3">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white sticky-top" style="top: 85px;">
+                    <!-- Filter Header -->
+                    <div class="fw-bold text-uppercase fs-6 mb-3 text-slate-900 border-bottom pb-2 d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-filter text-primary"></i> BỘ LỌC TÌM KIẾM
+                    </div>
+
+                    <!-- 1. Nơi Bán -->
+                    <div class="mb-3 border-bottom pb-3">
+                        <div class="fw-bold small mb-2 text-slate-800">Nơi Bán</div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="home_loc1" checked>
+                            <label class="form-check-label text-slate-700" for="home_loc1">Thành phố Hà Nội</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="home_loc2">
+                            <label class="form-check-label text-slate-700" for="home_loc2">Thành phố Hồ Chí Minh</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="home_loc3">
+                            <label class="form-check-label text-slate-700" for="home_loc3">Tỉnh Bắc Ninh</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="home_loc4">
+                            <label class="form-check-label text-slate-700" for="home_loc4">Tỉnh Cao Bằng</label>
+                        </div>
+                    </div>
+
+                    <!-- 2. Theo Danh Mục -->
+                    <div class="mb-3 border-bottom pb-3">
+                        <div class="fw-bold small mb-2 text-slate-800">Theo Danh Mục</div>
+                        <div class="form-check small mb-1" th:each="cat : ${categories}">
+                            <input class="form-check-input" type="checkbox" th:id="'home_cat_' + ${cat.id}"
+                                   th:onclick="'window.location.href=\'/products?categoryId=' + ${cat.id} + '\''">
+                            <label class="form-check-label text-slate-700 fw-medium" th:for="'home_cat_' + ${cat.id}" th:text="${cat.name}">Category Name</label>
+                        </div>
+                    </div>
+
+                    <!-- 3. Đơn Vị Vận Chuyển -->
+                    <div class="mb-3 border-bottom pb-3">
+                        <div class="fw-bold small mb-2 text-slate-800">Đơn Vị Vận Chuyển</div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="home_ship1" checked>
+                            <label class="form-check-label text-slate-700" for="home_ship1">Giao Hàng Nhanh 24h</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="home_ship2">
+                            <label class="form-check-label text-slate-700" for="home_ship2">Hỏa Tốc Siêu Tốc</label>
+                        </div>
+                    </div>
+
+                    <!-- 4. Thương Hiệu & Shop -->
+                    <div class="mb-3">
+                        <div class="fw-bold small mb-2 text-slate-800">Thương Hiệu &amp; Shop</div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="home_b1" checked>
+                            <label class="form-check-label text-slate-700" for="home_b1">Chính Hãng Mall</label>
+                        </div>
+                        <div class="form-check small mb-1">
+                            <input class="form-check-input" type="checkbox" id="home_b2">
+                            <label class="form-check-label text-slate-700" for="home_b2">Shop Yêu Thích+</label>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar Support Hotline -->
+                    <div class="mt-3 pt-3 border-top text-center">
+                        <small class="text-slate-400 d-block mb-1">Hotline tư vấn miễn phí:</small>
+                        <span class="fw-extrabold text-primary fs-6" th:text="${siteSetting != null ? siteSetting.contactPhone : '1900 1234'}">1900 1234</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content Area (Hero Slider & Product Showcase) -->
+            <div class="col-lg-9">
+
+                <!-- Hero Promotional Slider Carousel (Royal Indigo Theme) -->
+                <div id="heroPromoCarousel" class="carousel slide shadow-sm rounded-4 overflow-hidden mb-4" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#heroPromoCarousel" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#heroPromoCarousel" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#heroPromoCarousel" data-bs-slide-to="2"></button>
+                    </div>
+
+                    <div class="carousel-inner">
+                        <!-- Slide 1 -->
+                        <div class="carousel-item active" data-bs-interval="4000">
+                            <div class="p-5 text-white position-relative" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%); min-height: 320px;">
+                                <div class="row align-items-center">
+                                    <div class="col-md-7">
+                                        <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fw-bold mb-3"><i class="fa-solid fa-bolt me-1"></i>SIÊU SALE CÔNG NGHỆ</span>
+                                        <h2 class="display-6 fw-extrabold mb-3">Giảm Tới 50% Laptop &amp; Smartphone</h2>
+                                        <p class="text-slate-200 mb-4">Sở hữu ngay iPhone 15 Pro Max, MacBook Pro M3, Dell XPS với giá ưu đãi cực sốc!</p>
+                                        <a href="/products?categoryId=1" class="btn btn-warning btn-lg rounded-pill px-4 fw-bold shadow"><i class="fa-solid fa-cart-shopping me-2"></i>Mua Ngay</a>
+                                    </div>
+                                    <div class="col-md-5 d-none d-md-block text-center">
+                                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500" class="img-fluid rounded-4 shadow-lg" style="max-height: 220px; object-fit: cover;" alt="Promo Tech">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 2 -->
+                        <div class="carousel-item" data-bs-interval="4000">
+                            <div class="p-5 text-white position-relative" style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%); min-height: 320px;">
+                                <div class="row align-items-center">
+                                    <div class="col-md-7">
+                                        <span class="badge bg-light text-primary rounded-pill px-3 py-2 fw-bold mb-3"><i class="fa-solid fa-fire me-1"></i>BST THỜI TRANG 2026</span>
+                                        <h2 class="display-6 fw-extrabold mb-3">Thời Trang Chic Style Dẫn Đầu Xu Hướng</h2>
+                                        <p class="text-blue-100 mb-4">Bộ sưu tập áo sơ mi Oxford, đầm lụa Vintage, Sneaker cao cấp cho phái đẹp &amp; nam giới.</p>
+                                        <a href="/products?categoryId=2" class="btn btn-light text-primary btn-lg rounded-pill px-4 fw-bold shadow"><i class="fa-solid fa-bag-shopping me-2"></i>Xem Bộ Sưu Tập</a>
+                                    </div>
+                                    <div class="col-md-5 d-none d-md-block text-center">
+                                        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=500" class="img-fluid rounded-4 shadow-lg" style="max-height: 220px; object-fit: cover;" alt="Promo Fashion">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 3 -->
+                        <div class="carousel-item" data-bs-interval="4000">
+                            <div class="p-5 text-white position-relative" style="background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #10b981 100%); min-height: 320px;">
+                                <div class="row align-items-center">
+                                    <div class="col-md-7">
+                                        <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fw-bold mb-3"><i class="fa-solid fa-house-laptop me-1"></i>GIA DỤNG THÔNG MINH</span>
+                                        <h2 class="display-6 fw-extrabold mb-3">Đổi Mới Căn Bếp Cùng SmartHome</h2>
+                                        <p class="text-emerald-100 mb-4">Nồi chiên không dầu Philips, Robot hút bụi Xiaomi, Máy lọc không khí Levoit bảo vệ gia đình.</p>
+                                        <a href="/products?categoryId=3" class="btn btn-warning btn-lg rounded-pill px-4 fw-bold shadow"><i class="fa-solid fa-plug me-2"></i>Sắm Đồ Gia Dụng</a>
+                                    </div>
+                                    <div class="col-md-5 d-none d-md-block text-center">
+                                        <img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=500" class="img-fluid rounded-4 shadow-lg" style="max-height: 220px; object-fit: cover;" alt="Promo Home">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#heroPromoCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#heroPromoCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+
+                <!-- Trust Badges Bar -->
+                <div class="row g-3 mb-5">
+                    <div class="col-6 col-md-3">
+                        <div class="trust-badge-card text-center h-100">
+                            <div class="text-primary fs-2 mb-2"><i class="fa-solid fa-truck-fast"></i></div>
+                            <h6 class="fw-bold mb-1">Giao Hàng Nhanh 24H</h6>
+                            <small class="text-muted">Miễn phí vận chuyển toàn quốc</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="trust-badge-card text-center h-100">
+                            <div class="text-emerald-600 fs-2 mb-2"><i class="fa-solid fa-shield-check"></i></div>
+                            <h6 class="fw-bold mb-1">Hàng Chính Hãng 100%</h6>
+                            <small class="text-muted">Hoàn tiền 200% nếu hàng giả</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="trust-badge-card text-center h-100">
+                            <div class="text-amber-500 fs-2 mb-2"><i class="fa-solid fa-rotate-left"></i></div>
+                            <h6 class="fw-bold mb-1">Đổi Trả Trong 7 Ngày</h6>
+                            <small class="text-muted">Dễ dàng, không tính phí phát sinh</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="trust-badge-card text-center h-100">
+                            <div class="text-primary fs-2 mb-2"><i class="fa-solid fa-headset"></i></div>
+                            <h6 class="fw-bold mb-1">Hỗ Trợ 24/7</h6>
+                            <small class="text-muted">Tư vấn tận tâm mọi lúc</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categorized Product Sections (Nhấn bất kỳ đâu trên card cũng mở Chi tiết) -->
+                <div th:each="cat : ${categories}" th:if="${categoryProductsMap.get(cat.id) != null and !categoryProductsMap.get(cat.id).isEmpty()}" class="mb-5">
+                    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+                        <div>
+                            <h3 class="fw-bold mb-0 text-slate-900">
+                                <i class="fa-solid fa-tags me-2 text-primary"></i>
+                                <span th:text="${cat.name}">Tên Danh Mục</span>
+                            </h3>
+                        </div>
+                        <a th:href="@{/products(categoryId=${cat.id})}" class="btn btn-sm btn-outline-primary rounded-pill fw-bold px-3">
+                            Xem thêm trong <span th:text="${cat.name}">Danh Mục</span> <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+
+                    <div class="row g-4">
+                        <div class="col-6 col-md-4 col-lg-3" th:each="product : ${categoryProductsMap.get(cat.id)}">
+                            <div class="card card-product h-100 shadow-sm border-0 position-relative" style="cursor: pointer;" th:onclick="'window.location.href=\'/products/' + ${product.id} + '\''">
+                                <div class="product-img-wrapper position-relative">
+                                    <span class="badge bg-primary position-absolute top-0 start-0 m-2 rounded-2 shadow-sm" style="font-size: 0.7rem; z-index: 2;">PREMIUM</span>
+                                    <img th:src="${product.imageUrl}" class="product-img" alt="Product Image">
+                                </div>
+                                <div class="card-body d-flex flex-column p-3">
+                                    <div class="mb-1 d-flex align-items-center gap-1">
+                                        <span class="badge bg-primary text-white rounded-1" style="font-size: 0.65rem;">Chính Hãng</span>
+                                        <span class="shop-badge text-truncate" style="max-width: 110px;" th:text="${product.shop.name}">Shop</span>
+                                    </div>
+                                    <h6 class="card-title text-slate-900 fw-bold mb-2 text-truncate" style="font-size: 0.9rem;" th:text="${product.name}">Tên Sản Phẩm</h6>
+                                    
+                                    <div class="mt-auto">
+                                        <div class="d-flex align-items-baseline gap-1 mb-2">
+                                            <span class="price-text fs-6 text-primary fw-bold" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
+                                            <small class="text-muted text-decoration-line-through ms-1" style="font-size: 0.75rem;" th:text="${#numbers.formatDecimal(product.price.multiply(1.3), 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</small>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between align-items-center mb-2" style="font-size: 0.75rem;">
+                                            <span class="text-amber-500 fw-bold"><i class="fa-solid fa-star me-1"></i>4.9</span>
+                                            <span class="text-slate-400">Đã bán 1.2k</span>
+                                        </div>
+
+                                        <div class="d-flex gap-1">
+                                            <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-outline-secondary w-50 rounded-pill" style="font-size: 0.75rem;">Chi tiết</a>
+                                            <form action="/cart/add" method="post" class="w-50" onclick="event.stopPropagation();">
+                                                <input type="hidden" name="productId" th:value="${product.id}">
+                                                <button type="submit" class="btn btn-sm btn-primary w-100 rounded-pill" style="font-size: 0.75rem;" onclick="event.stopPropagation();"><i class="fa-solid fa-cart-plus me-1"></i>Thêm</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Shops Showcase -->
+                <div class="mb-5">
+                    <h3 class="fw-bold mb-4 text-slate-900"><i class="fa-solid fa-store me-2 text-primary"></i>Gian Hàng Uy Tín Trên Sàn</h3>
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-4" th:each="shop : ${shops}">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white d-flex flex-row align-items-center gap-3">
+                                <img th:if="${shop.logoUrl != null and !shop.logoUrl.isEmpty()}" th:src="${shop.logoUrl}" class="rounded-circle shadow-sm" style="width: 60px; height: 60px; object-fit: cover;" alt="Shop Logo">
+                                <div th:if="${shop.logoUrl == null or shop.logoUrl.isEmpty()}" class="bg-blue-100 text-primary rounded-circle p-3 fs-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                                    <i class="fa-solid fa-store"></i>
+                                </div>
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <h5 class="fw-bold mb-1 text-slate-900 text-truncate" th:text="${shop.name}">Shop Name</h5>
+                                    <p class="text-muted small mb-2 text-truncate" th:text="${shop.description}">Mô tả gian hàng...</p>
+                                    <a th:href="@{/shops/{id}(id=${shop.id})}" class="btn btn-sm btn-outline-primary rounded-pill fw-semibold">Ghé thăm Shop <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Chi Tiết Đơn Hàng #' + ${order.id})}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="fw-bold mb-0">Chi Tiết Đơn Hàng #<span th:text="${order.id}">1</span></h3>
+            <a href="/customer/orders" class="btn btn-outline-secondary rounded-pill"><i class="fa-solid fa-arrow-left me-1"></i>Quay lại lịch sử</a>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-boxes-packing me-2"></i>Danh Sách Sản Phẩm Đặt Mua</h5>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Sản Phẩm</th>
+                                    <th>Nhà Bán Hàng</th>
+                                    <th>Đơn Giá</th>
+                                    <th>Số Lượng</th>
+                                    <th>Trạng Thái Giao</th>
+                                    <th>Thành Tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${order.items}">
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <img th:src="${item.product.imageUrl}" class="rounded-2" style="width: 40px; height: 40px; object-fit: cover;" alt="Product">
+                                            <span class="fw-bold" th:text="${item.product.name}">Product</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="shop-badge" th:text="${item.shop.name}">Shop</span>
+                                    </td>
+                                    <td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0</td>
+                                    <td class="text-center" th:text="${item.quantity}">1</td>
+                                    <td>
+                                        <span class="badge"
+                                              th:classappend="${item.status.name() == 'DELIVERED' ? 'bg-success' : (item.status.name() == 'CANCELLED' ? 'bg-danger' : 'bg-info text-dark')}"
+                                              th:text="${item.status}">PENDING</span>
+                                    </td>
+                                    <td class="fw-bold text-danger" th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <h5 class="fw-bold mb-3 text-dark"><i class="fa-solid fa-address-card me-2"></i>Thông Tin Nhận Hàng</h5>
+                    
+                    <p class="mb-1"><strong>Người nhận:</strong> <span th:text="${order.recipientName}">Nguyễn Văn A</span></p>
+                    <p class="mb-1"><strong>Số điện thoại:</strong> <span th:text="${order.recipientPhone}">0901234567</span></p>
+                    <p class="mb-3"><strong>Địa chỉ giao:</strong> <span th:text="${order.shippingAddress}">Địa chỉ</span></p>
+                    <p class="mb-3 text-muted small" th:if="${order.note != null and !order.note.isBlank()}">
+                        <strong>Ghi chú:</strong> <span th:text="${order.note}">Ghi chú</span>
+                    </p>
+
+                    <hr>
+                    <div class="d-flex justify-content-between fs-5 fw-bold">
+                        <span>Tổng hóa đơn:</span>
+                        <span class="text-danger" th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'COMMA', 0, 'POINT')} + ' VNĐ'">0 VNĐ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

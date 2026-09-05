@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head('Đăng Ký Nhà Bán Hàng')}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <div class="card border-0 shadow-lg rounded-4 p-4 bg-white">
+                    <div class="text-center mb-4">
+                        <i class="fa-solid fa-store text-success display-4 mb-2"></i>
+                        <h3 class="fw-bold">Đăng Ký Trở Thành Nhà Bán Hàng</h3>
+                        <p class="text-muted small">Tạo cửa hàng của bạn trên sàn và tiếp cận hàng ngàn khách hàng tiềm năng</p>
+                    </div>
+
+                    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+                    <form th:action="@{/vendor-register}" th:object="${vendor}" method="post">
+                        <h5 class="fw-bold text-primary mb-3 border-bottom pb-2"><i class="fa-solid fa-user me-2"></i>Thông Tin Chủ Shop</h5>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Tên đăng nhập *</label>
+                                <input type="text" th:field="*{username}" class="form-control" placeholder="Tên đăng nhập Vendor" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Mật khẩu *</label>
+                                <input type="password" th:field="*{password}" class="form-control" placeholder="Mật khẩu" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Họ và tên người đại diện *</label>
+                            <input type="text" th:field="*{fullName}" class="form-control" placeholder="Nguyễn Văn B" required>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Email liên hệ *</label>
+                                <input type="email" th:field="*{email}" class="form-control" placeholder="vendor@gmail.com" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Số điện thoại *</label>
+                                <input type="text" th:field="*{phone}" class="form-control" placeholder="0912345678" required>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold text-success mb-3 border-bottom pb-2 mt-4"><i class="fa-solid fa-shop me-2"></i>Thông Tin Gian Hàng / Shop</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tên Cửa Hàng (Shop) *</label>
+                            <input type="text" th:field="*{shopName}" class="form-control" placeholder="Ví dụ: Shop Công Nghệ ABC" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mô tả cửa hàng</label>
+                            <textarea th:field="*{shopDescription}" class="form-control" rows="3" placeholder="Giới thiệu về các sản phẩm chính của shop..."></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Địa chỉ cửa hàng *</label>
+                            <input type="text" th:field="*{shopAddress}" class="form-control" placeholder="Số nhà, Đường, Phường/Xã, Quận/Huyện, Tỉnh/TP" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill fw-bold mb-3 shadow-sm">
+                            <i class="fa-solid fa-paper-plane me-2"></i>Gửi Đơn Đăng Ký Mở Shop
+                        </button>
+                    </form>
+
+                    <div class="text-center">
+                        <p class="mb-0 text-muted">Đã có tài khoản? <a href="/login" class="text-primary text-decoration-none fw-bold">Đăng nhập</a></p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>

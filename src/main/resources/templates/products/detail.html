@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/main :: head(${product.name})}"></head>
+<body>
+    <div th:replace="~{layout/main :: navbar}"></div>
+    <div th:replace="~{layout/main :: alerts}"></div>
+
+    <div class="container main-content mt-3">
+        <!-- Top Breadcrumbs -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb small">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-slate-600">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="/products" class="text-decoration-none text-slate-600">Sản phẩm</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/products(categoryId=${product.category.id})}" class="text-decoration-none text-slate-600" th:text="${product.category.name}">Category</a></li>
+                <li class="breadcrumb-item active text-truncate" style="max-width: 300px;" aria-current="page" th:text="${product.name}">Product Name</li>
+            </ol>
+        </nav>
+
+        <!-- Main Product Card (Chi tiết sản phẩm) -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+            <div class="row g-4">
+                <!-- Left: Product Image & Gallery Strip -->
+                <div class="col-lg-5 text-center">
+                    <div class="position-relative mb-3 bg-slate-50 rounded-4 p-2 border">
+                        <span class="badge bg-primary position-absolute top-0 start-0 m-3 px-2 py-1 shadow-sm fs-7">CHÍNH HÃNG</span>
+                        <img th:src="${product.imageUrl}" id="mainProductImg" class="img-fluid rounded-3" style="max-height: 380px; object-fit: contain;" alt="Product Image">
+                    </div>
+                    <!-- Gallery Strip Thumbnails -->
+                    <div class="d-flex justify-content-center gap-2 mb-3">
+                        <img th:src="${product.imageUrl}" class="rounded border p-1 opacity-100 hover:opacity-75 transition" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" alt="Thumb 1">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300" class="rounded border p-1 opacity-75 hover:opacity-100 transition" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" alt="Thumb 2">
+                        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=300" class="rounded border p-1 opacity-75 hover:opacity-100 transition" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" alt="Thumb 3">
+                        <img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=300" class="rounded border p-1 opacity-75 hover:opacity-100 transition" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" alt="Thumb 4">
+                    </div>
+                    <!-- Social Share & Wishlist -->
+                    <div class="d-flex align-items-center justify-content-between text-slate-500 small px-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span>Chia sẻ:</span>
+                            <a href="#" class="text-primary fs-6"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="#" class="text-info fs-6"><i class="fa-brands fa-facebook-messenger"></i></a>
+                            <a href="#" class="text-danger fs-6"><i class="fa-brands fa-pinterest"></i></a>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-heart text-danger me-1"></i>Đã thích (609)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Product Info & Purchase Form -->
+                <div class="col-lg-7">
+                    <div class="mb-2">
+                        <span class="badge bg-primary text-white rounded-1 me-2 px-2 py-1">Yêu thích+</span>
+                        <span class="fw-bold text-slate-900 fs-4" th:text="${product.name}">Tên Sản Phẩm Full</span>
+                    </div>
+
+                    <!-- Ratings & Reviews Header -->
+                    <div class="d-flex align-items-center gap-3 mb-3 pb-2 border-bottom text-slate-600 small">
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="fw-bold text-amber-500 border-bottom border-amber-500 me-1">4.7</span>
+                            <div class="text-amber-500">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                            </div>
+                        </div>
+                        <div class="vr"></div>
+                        <div><strong class="text-slate-900">212</strong> Đánh Giá</div>
+                        <div class="vr"></div>
+                        <div><strong class="text-slate-900">1.2k</strong> Đã Bán</div>
+                    </div>
+
+                    <!-- Price Banner Block -->
+                    <div class="p-3 rounded-4 bg-slate-50 mb-4">
+                        <small class="text-uppercase tracking-wider fw-bold text-primary mb-1 d-block" style="font-size: 0.75rem;"><i class="fa-solid fa-bolt me-1 text-warning"></i>GIÁ ĐẶC BIỆT DÀNH CHO BẠN</small>
+                        <div class="d-flex align-items-baseline gap-3">
+                            <span class="fs-2 fw-extrabold text-primary" th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
+                            <span class="text-muted text-decoration-line-through fs-6" th:text="${#numbers.formatDecimal(product.price.multiply(1.3), 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
+                            <span class="badge bg-danger rounded-pill px-2 py-1">-30%</span>
+                        </div>
+                    </div>
+
+                    <!-- Shipping & Protection Info -->
+                    <div class="mb-3 small">
+                        <div class="row mb-2">
+                            <div class="col-3 text-slate-500">Vận Chuyển:</div>
+                            <div class="col-9 text-slate-800"><i class="fa-solid fa-truck-fast text-emerald-600 me-1"></i>Giao Hàng Nhanh 24h (Miễn phí vận chuyển)</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3 text-slate-500">Bảo Hiểm:</div>
+                            <div class="col-9 text-slate-800"><i class="fa-solid fa-shield-check text-primary me-1"></i>Trả hàng miễn phí 15 ngày - Bảo hiểm hàng chính hãng</div>
+                        </div>
+                    </div>
+
+                    <!-- Options: Colors & Sizes -->
+                    <div class="mb-3 small">
+                        <div class="row align-items-center mb-2">
+                            <div class="col-3 text-slate-500">Màu Sắc:</div>
+                            <div class="col-9 d-flex gap-2 flex-wrap">
+                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3 active">Vàng</button>
+                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3">Xanh Thẫm</button>
+                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3">Trắng</button>
+                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3">Chấm Bi</button>
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-3 text-slate-500">Kích Cỡ:</div>
+                            <div class="col-9 d-flex gap-2 flex-wrap">
+                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3 active">Size M (&lt; 58kg)</button>
+                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3">Size L (&lt; 68kg)</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity & Add To Cart Form -->
+                    <form action="/cart/add" method="post" th:if="${product.stockQuantity > 0}">
+                        <input type="hidden" name="productId" th:value="${product.id}">
+                        
+                        <div class="row align-items-center mb-4 small">
+                            <div class="col-3 text-slate-500">Số Lượng:</div>
+                            <div class="col-9 d-flex align-items-center gap-3">
+                                <div class="input-group input-group-sm" style="width: 130px;">
+                                    <input type="number" name="quantity" class="form-control text-center rounded-3 fw-bold" value="1" min="1" th:max="${product.stockQuantity}">
+                                </div>
+                                <span class="text-slate-400" th:text="${product.stockQuantity} + ' sản phẩm có sẵn'">10 sản phẩm có sẵn</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-outline-primary btn-lg rounded-pill px-4 fw-bold shadow-sm" style="min-width: 200px;">
+                                <i class="fa-solid fa-cart-plus me-2"></i>Thêm Vào Giỏ Hàng
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow">
+                                Mua Ngay
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vendor Profile Header Card -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+            <div class="row align-items-center g-4">
+                <div class="col-md-5 border-end border-md-end">
+                    <div class="d-flex align-items-center gap-3">
+                        <img th:if="${product.shop.logoUrl != null and !product.shop.logoUrl.isEmpty()}" th:src="${product.shop.logoUrl}" class="rounded-circle border p-1 shadow-2xs" style="width: 75px; height: 75px; object-fit: cover;" alt="Shop Logo">
+                        <div th:if="${product.shop.logoUrl == null or product.shop.logoUrl.isEmpty()}" class="bg-blue-100 text-primary rounded-circle p-3 fs-2 d-flex align-items-center justify-content-center" style="width: 75px; height: 75px;">
+                            <i class="fa-solid fa-store"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1 text-slate-900" th:text="${product.shop.name}">HONEYBOMBER STORE</h5>
+                            <small class="text-slate-400 d-block mb-2"><i class="fa-solid fa-circle text-emerald-500 me-1 fs-8"></i>Online 4 phút trước</small>
+                            <div class="d-flex gap-2">
+                                <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3"><i class="fa-solid fa-comments me-1"></i>Chat Ngay</a>
+                                <a th:href="@{/shops/{id}(id=${product.shop.id})}" class="btn btn-sm btn-light rounded-pill px-3 border"><i class="fa-solid fa-store me-1"></i>Xem Shop</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="row g-3 small text-slate-600">
+                        <div class="col-4">
+                            <span>Đánh Giá: <strong class="text-primary">163k</strong></span>
+                        </div>
+                        <div class="col-4">
+                            <span>Tỉ Lệ Phản Hồi: <strong class="text-primary">93%</strong></span>
+                        </div>
+                        <div class="col-4">
+                            <span>Tham Gia: <strong class="text-primary">6 năm trước</strong></span>
+                        </div>
+                        <div class="col-4">
+                            <span>Sản Phẩm: <strong class="text-primary">616</strong></span>
+                        </div>
+                        <div class="col-4">
+                            <span>Thời Gian Phản Hồi: <strong class="text-primary">trong vài giờ</strong></span>
+                        </div>
+                        <div class="col-4">
+                            <span>Người Theo Dõi: <strong class="text-primary">347.3k</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Specifications & Description Card -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white p-4 mb-4">
+            <h5 class="fw-bold mb-3 text-slate-900 border-bottom pb-2"><i class="fa-solid fa-circle-info me-2 text-primary"></i>CHI TIẾT SẢN PHẨM</h5>
+            
+            <div class="table-responsive mb-4">
+                <table class="table table-borderless small align-middle">
+                    <tbody>
+                        <tr>
+                            <td class="text-slate-500" style="width: 180px;">Danh Mục:</td>
+                            <td><a th:href="@{/products(categoryId=${product.category.id})}" class="text-decoration-none text-primary fw-semibold" th:text="${product.category.name}">Danh Mục</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-500">Thương Hiệu / Shop:</td>
+                            <td><a th:href="@{/shops/{id}(id=${product.shop.id})}" class="text-decoration-none text-primary fw-semibold" th:text="${product.shop.name}">Shop Name</a></td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-500">Xuất Xứ:</td>
+                            <td>Việt Nam / Chính Hãng</td>
+                        </tr>
+                        <tr>
+                            <td class="text-slate-500">Gửi Từ:</td>
+                            <td th:text="${product.shop.address}">Thành phố Hà Nội</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5 class="fw-bold mb-3 text-slate-900 border-bottom pb-2"><i class="fa-solid fa-file-text me-2 text-primary"></i>MÔ TẢ SẢN PHẨM</h5>
+            <p class="text-slate-700 leading-relaxed mb-0" th:text="${product.description}">Mô tả chi tiết sản phẩm...</p>
+        </div>
+
+        <!-- Related Block 1: Các sản phẩm khác của Shop -->
+        <div class="mb-5" th:if="${shopProducts != null and !shopProducts.isEmpty()}">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-slate-900 mb-0"><i class="fa-solid fa-store me-2 text-primary"></i>CÁC SẢN PHẨM KHÁC CỦA SHOP</h5>
+                <a th:href="@{/shops/{id}(id=${product.shop.id})}" class="btn btn-sm btn-outline-primary rounded-pill fw-semibold">Xem tất cả từ shop <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-2" th:each="p : ${shopProducts}">
+                    <div class="card card-product h-100 shadow-sm border-0 position-relative" style="cursor: pointer;" th:onclick="'window.location.href=\'/products/' + ${p.id} + '\''">
+                        <img th:src="${p.imageUrl}" class="product-img" style="height: 140px;" alt="Prod">
+                        <div class="card-body p-2 d-flex flex-column">
+                            <h6 class="card-title text-truncate fw-bold mb-1" style="font-size: 0.8rem;" th:text="${p.name}">Product Name</h6>
+                            <span class="price-text text-primary fw-bold" style="font-size: 0.85rem;" th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Block 2: Các sản phẩm tương tự cùng Danh Mục -->
+        <div class="mb-5" th:if="${categoryProducts != null and !categoryProducts.isEmpty()}">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-slate-900 mb-0"><i class="fa-solid fa-tags me-2 text-primary"></i>SẢN PHẨM TƯƠNG TỰ CÓ CÙNG DANH MỤC</h5>
+                <a th:href="@{/products(categoryId=${product.category.id})}" class="btn btn-sm btn-outline-primary rounded-pill fw-semibold">Xem danh mục <i class="fa-solid fa-arrow-right ms-1"></i></a>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-6 col-md-4 col-lg-2" th:each="p : ${categoryProducts}">
+                    <div class="card card-product h-100 shadow-sm border-0 position-relative" style="cursor: pointer;" th:onclick="'window.location.href=\'/products/' + ${p.id} + '\''">
+                        <img th:src="${p.imageUrl}" class="product-img" style="height: 140px;" alt="Prod">
+                        <div class="card-body p-2 d-flex flex-column">
+                            <h6 class="card-title text-truncate fw-bold mb-1" style="font-size: 0.8rem;" th:text="${p.name}">Product Name</h6>
+                            <span class="price-text text-primary fw-bold" style="font-size: 0.85rem;" th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div th:replace="~{layout/main :: footer}"></div>
+</body>
+</html>
