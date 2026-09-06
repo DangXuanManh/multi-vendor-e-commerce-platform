@@ -195,14 +195,14 @@ public class DataInitializer implements CommandLineRunner {
         Object[][] homeCatalog = {
             {"Nồi Chiên Không Dầu Philips XXL 6.2L 2000W", "3290000", "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600", "Nồi chiên không dầu Philips công nghệ Rapid Air giảm 90% mỡ thừa, dung tích lớn chiên gà nguyên con."},
             {"Robot Hút Bụi Lau Nhà Xiaomi Vacuum S10", "6490000", "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600", "Robot hút bụi Xiaomi lực hút 4000Pa, định vị Laser LDS vẽ bản đồ thông minh tự động tránh vật cản."},
-            {"Máy Lọc Không Khí Levoit Core 300S Smart", "3890000", "https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600", "Máy lọc không khí Levoit màng lọc HEPA H13 loại bỏ 99.97% bụi mịn PM2.5 và vi khuẩn trong phòng 41m2."},
-            {"Bình Đun Siêu Tốc Thủy Tinh Lock&Lock 1.8L", "650000", "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?w=600", "Ấm siêu tốc thủy tinh chịu nhiệt Lock&Lock công suất 1850W đun sôi nhanh, tự ngắt an toàn."},
-            {"Máy Ép Trái Cây Chậm Hurom H300 Hàn Quốc", "9890000", "https://images.unsplash.com/photo-1622484210800-885107928926?w=600", "Máy ép chậm Hurom công nghệ ép tự động nguyên quả giữ trọn dưỡng chất vitamin và hương vị."},
+            {"Máy Lọc Không Khí Levoit Core 300S Smart", "3890000", "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600", "Máy lọc không khí Levoit màng lọc HEPA H13 loại bỏ 99.97% bụi mịn PM2.5 và vi khuẩn trong phòng 41m2."},
+            {"Bình Đun Siêu Tốc Thủy Tinh Lock&Lock 1.8L", "650000", "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=600", "Ấm siêu tốc thủy tinh chịu nhiệt Lock&Lock công suất 1850W đun sôi nhanh, tự ngắt an toàn."},
+            {"Máy Ép Trái Cây Chậm Hurom H300 Hàn Quốc", "9890000", "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=600", "Máy ép chậm Hurom công nghệ ép tự động nguyên quả giữ trọn dưỡng chất vitamin và hương vị."},
             {"Lò Vi Sóng Có Nướng Sharp 20L 800W", "1890000", "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=600", "Lò vi sóng nướng Sharp dung tích 20L rã đông nhanh, 5 mức công suất điều khiển nút vặn bền bỉ."},
             {"Máy Xay Sinh Tố Đa Năng Panasonic 450W", "1290000", "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=600", "Máy xay sinh tố cối thủy tinh Panasonic lưỡi dao inox 4 cánh chống gỉ xay đá cực nhuyễn."},
-            {"Nồi Cơm Điện Tử Cuckoo 1.8L Hàn Quốc", "2490000", "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600", "Nồi cơm điện tử cao cấp Cuckoo lòng nồi phủ chống dính Xwall Marble chín đều hạt cơm mềm dẻo."},
-            {"Quạt Điều Hòa Hơi Nước Midea 50L Cool", "2990000", "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600", "Quạt làm mát không khí Midea dung tích bình chứa 50L làm mát diện tích 30m2 tiết kiệm điện."},
-            {"Bàn Ủi Hơi Nước Đứng Tefal Pro Style 1800W", "1750000", "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=600", "Bàn là hơi nước đứng Tefal bình nước 1.5L phun hơi liên tục 30g/phút phẳng quần áo tức thì."},
+            {"Nồi Cơm Điện Tử Cuckoo 1.8L Hàn Quốc", "2490000", "https://images.unsplash.com/photo-1585515320310-259814833e62?w=600", "Nồi cơm điện tử cao cấp Cuckoo lòng nồi phủ chống dính Xwall Marble chín đều hạt cơm mềm dẻo."},
+            {"Quạt Điều Hòa Hơi Nước Midea 50L Cool", "2990000", "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600", "Quạt làm mát không khí Midea dung tích bình chứa 50L làm mát diện tích 30m2 tiết kiệm điện."},
+            {"Bàn Ủi Hơi Nước Đứng Tefal Pro Style 1800W", "1750000", "https://images.unsplash.com/photo-1489274495757-95c7c837b101?w=600", "Bàn là hơi nước đứng Tefal bình nước 1.5L phun hơi liên tục 30g/phút phẳng quần áo tức thì."},
             {"Bộ Nồi Inox 3 Đáy Sunhouse 5 Món Cao Cấp", "990000", "https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=600", "Bộ nồi chảo inox 304 Sunhouse đáy từ dùng cho mọi loại bếp ga, bếp từ, bếp hồng ngoại."},
             {"Đèn Học Chống Cận Xiaomi Mi Smart LED Desk Lamp", "790000", "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600", "Đèn bàn chống cận Xiaomi điều chỉnh độ sáng qua app điện thoại, bảo vệ thị lực tuyệt đối."},
             {"Máy Pha Cà Phê Espresso Delonghi Dedica 15 Bar", "5490000", "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600", "Máy pha cafe bán tự động Delonghi áp suất 15 bar chuẩn Ý, tích hợp vòi đánh sữa tạo bọt Cappuccino thơm ngon."}
@@ -258,25 +258,25 @@ public class DataInitializer implements CommandLineRunner {
             
             String newImg = null;
             if (name.contains("Quạt Điều Hòa")) {
-                newImg = "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600";
+                newImg = "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=600";
             } else if (name.contains("Nồi Cơm Điện")) {
-                newImg = "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600";
+                newImg = "https://images.unsplash.com/photo-1585515320310-259814833e62?w=600";
             } else if (name.contains("Máy Xay Sinh Tố")) {
                 newImg = "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=600";
             } else if (name.contains("Lò Vi Sóng")) {
                 newImg = "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=600";
             } else if (name.contains("Máy Ép Trái Cây")) {
-                newImg = "https://images.unsplash.com/photo-1622484210800-885107928926?w=600";
+                newImg = "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=600";
             } else if (name.contains("Bình Đun Siêu Tốc")) {
-                newImg = "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?w=600";
+                newImg = "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=600";
             } else if (name.contains("Máy Lọc Không Khí")) {
-                newImg = "https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600";
+                newImg = "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600";
             } else if (name.contains("Robot Hút Bụi")) {
                 newImg = "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600";
             } else if (name.contains("Nồi Chiên Không Dầu")) {
                 newImg = "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600";
             } else if (name.contains("Bàn Ủi Hơi Nước")) {
-                newImg = "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=600";
+                newImg = "https://images.unsplash.com/photo-1489274495757-95c7c837b101?w=600";
             } else if (name.contains("Bộ Nồi Inox")) {
                 newImg = "https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=600";
             } else if (name.contains("Đèn Học Chống Cận")) {
