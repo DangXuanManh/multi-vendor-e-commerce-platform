@@ -127,15 +127,15 @@ public class DataInitializer implements CommandLineRunner {
                 "contact@smarthome.vn",
                 "0934567890",
                 vendor3User,
-                ShopStatus.PENDING
+                ShopStatus.APPROVED
         );
         shop3.setLogoUrl("https://images.unsplash.com/photo-1556911220-e15b29be8c8f?w=200");
         shop3 = shopRepository.save(shop3);
 
-        // 4. Generate Realistic Products (>100 per shop)
+        // 4. Generate Realistic Products (>100 per shop) with Precise Matching Images
         List<Product> productsToSave = new ArrayList<>();
 
-        // Realistic Tech Products Data for Shop 1
+        // Tech Catalog
         Object[][] techCatalog = {
             {"iPhone 15 Pro Max 256GB Titan Tự Nhiên", "34990000", "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600", "Điện thoại Apple iPhone 15 Pro Max chip A17 Pro, vỏ Titan cao cấp, camera 48MP zoom 5x."},
             {"MacBook Pro 14 inch M3 Max 36GB 1TB", "52990000", "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600", "Apple MacBook Pro M3 Max màn hình Liquid Retina XDR 120Hz, hiệu năng đồ họa cực khủng."},
@@ -148,19 +148,22 @@ public class DataInitializer implements CommandLineRunner {
             {"Màn hình Gaming LG UltraGear 27 inch 4K 144Hz", "11990000", "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600", "Màn hình máy tính LG UltraGear IPS 4K UHD 144Hz 1ms Nano IPS hỗ trợ G-Sync và FreeSync."},
             {"Loa Bluetooth Chống Nước JBL Charge 5 40W", "3690000", "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600", "Loa di động JBL Charge 5 âm thanh JBL Original Pro Sound, chống nước IP67, pin 20 giờ."},
             {"Ổ cứng di động SSD Samsung T7 Shield 1TB", "2890000", "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600", "Ổ cứng di động SSD Samsung T7 Shield tốc độ đọc 1050MB/s, chống nước chống va đập chuẩn quân đội."},
-            {"Đồng hồ Apple Watch Series 9 GPS 45mm", "9990000", "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600", "Smartwatch Apple Watch Series 9 chip S9 SIP, tính năng chạm hai lần Double Tap thông minh."}
+            {"Đồng hồ Apple Watch Series 9 GPS 45mm", "9990000", "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600", "Smartwatch Apple Watch Series 9 chip S9 SIP, tính năng chạm hai lần Double Tap thông minh."},
+            {"Laptop Gaming Asus ROG Strix G16 i9 16GB", "42990000", "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600", "Laptop chơi game Asus ROG Strix G16 chip Intel Core i9-13980HX, VGA RTX 4070, tản nhiệt ROG Intelligent."},
+            {"Smartphone Google Pixel 8 Pro 128GB Obsidian", "21990000", "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600", "Điện thoại Google Pixel 8 Pro chip Google Tensor G3, camera AI chụp đêm xuất sắc, màn hình 120Hz Super Actua."},
+            {"Tai nghe Apple AirPods Pro Gen 2 USB-C", "5890000", "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600", "Tai nghe không dây Apple AirPods Pro 2 trang bị chip H2, chống ồn chủ động gấp 2 lần, cổng sạc USB-C."}
         };
 
         for (int i = 1; i <= 105; i++) {
             Object[] item = techCatalog[(i - 1) % techCatalog.length];
-            String name = (String) item[0] + (i > 12 ? " (Lô hàng #" + i + ")" : "");
+            String name = (String) item[0] + (i > 15 ? " (Mã Vạch #" + i + ")" : "");
             BigDecimal price = new BigDecimal((String) item[1]);
             String img = (String) item[2];
             String desc = (String) item[3];
             productsToSave.add(new Product(name, desc, price, 15 + (i % 25), img, cat1, shop1));
         }
 
-        // Realistic Fashion Products Data for Shop 2
+        // Fashion Catalog
         Object[][] fashionCatalog = {
             {"Áo Sơ Mi Nam Cotton Oxford Tay Dài Slimfit", "450000", "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600", "Áo sơ mi nam chất liệu Cotton Oxford 100% thấm hút mồ hôi, chống nhăn nhẹ, phom dáng lịch lãm."},
             {"Đầm Xòe Nữ Lụa Hàn Thiết Kế Vintage", "680000", "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600", "Đầm nữ dáng xòe lụa Hàn sang trọng, tôn dáng nhẹ nhàng, phù hợp đi làm, đi tiệc và dạo phố."},
@@ -173,19 +176,21 @@ public class DataInitializer implements CommandLineRunner {
             {"Áo Thun Unisex Cotton 100% In Hình Art", "250000", "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600", "Áo phông nam nữ cotton 250gsm thoáng mát, công nghệ in lụa sắc nét không bong tróc."},
             {"Ví Da Nam Bò Thật Khóa Thuận Tiện", "380000", "https://images.unsplash.com/photo-1627123424574-724758594e93?w=600", "Ví nam dáng đứng da bò thật nhiều ngăn để thẻ và tiền mặt tiện dụng."},
             {"Giày Cao Gót Nữ Mũi Nhọn 7cm Da Mờ", "590000", "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600", "Giày cao gót công sở nữ mũi nhọn gót nhọn 7cm êm chân, tôn dáng thanh lịch."},
-            {"Áo Vest Nam Blazer Phong Cách Hàn Quốc", "1150000", "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600", "Áo blazer nam 2 lớp chất tuýt si giữ phom chuẩn, may thủ công tinh tế."}
+            {"Áo Vest Nam Blazer Phong Cách Hàn Quốc", "1150000", "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600", "Áo blazer nam 2 lớp chất tuýt si giữ phom chuẩn, may thủ công tinh tế."},
+            {"Giày Thể Thao Adidas Ultraboost Light Nam", "3200000", "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=600", "Giày chạy bộ Adidas Ultraboost đệm Boost năng lượng đàn hồi siêu nhẹ, ôm sát bàn chân."},
+            {"Balo Du Lịch Chống Nước Herschel Supply", "1650000", "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600", "Balo cao cấp chất liệu Polyester chống thấm nước, tích hợp ngăn đựng laptop 15.6 inch xịn xò."}
         };
 
         for (int i = 1; i <= 105; i++) {
             Object[] item = fashionCatalog[(i - 1) % fashionCatalog.length];
-            String name = (String) item[0] + (i > 12 ? " (BST #" + i + ")" : "");
+            String name = (String) item[0] + (i > 14 ? " (BST #" + i + ")" : "");
             BigDecimal price = new BigDecimal((String) item[1]);
             String img = (String) item[2];
             String desc = (String) item[3];
             productsToSave.add(new Product(name, desc, price, 20 + (i % 30), img, cat2, shop2));
         }
 
-        // Realistic Home Appliance Products Data for Shop 3
+        // Home Catalog
         Object[][] homeCatalog = {
             {"Nồi Chiên Không Dầu Philips XXL 6.2L 2000W", "3290000", "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600", "Nồi chiên không dầu Philips công nghệ Rapid Air giảm 90% mỡ thừa, dung tích lớn chiên gà nguyên con."},
             {"Robot Hút Bụi Lau Nhà Xiaomi Vacuum S10", "6490000", "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600", "Robot hút bụi Xiaomi lực hút 4000Pa, định vị Laser LDS vẽ bản đồ thông minh tự động tránh vật cản."},
@@ -198,12 +203,13 @@ public class DataInitializer implements CommandLineRunner {
             {"Quạt Điều Hòa Hơi Nước Midea 50L Cool", "2990000", "https://images.unsplash.com/photo-1618941723630-f2038740b2a3?w=600", "Quạt làm mát không khí Midea dung tích bình chứa 50L làm mát diện tích 30m2 tiết kiệm điện."},
             {"Bàn Ủi Hơi Nước Đứng Tefal Pro Style 1800W", "1750000", "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600", "Bàn là hơi nước đứng Tefal bình nước 1.5L phun hơi liên tục 30g/phút phẳng quần áo tức thì."},
             {"Bộ Nồi Inox 3 Đáy Sunhouse 5 Món Cao Cấp", "990000", "https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=600", "Bộ nồi chảo inox 304 Sunhouse đáy từ dùng cho mọi loại bếp ga, bếp từ, bếp hồng ngoại."},
-            {"Đèn Học Chống Cận Xiaomi Mi Smart LED Desk Lamp", "790000", "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600", "Đèn bàn chống cận Xiaomi điều chỉnh độ sáng qua app điện thoại, bảo vệ thị lực tuyệt đối."}
+            {"Đèn Học Chống Cận Xiaomi Mi Smart LED Desk Lamp", "790000", "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600", "Đèn bàn chống cận Xiaomi điều chỉnh độ sáng qua app điện thoại, bảo vệ thị lực tuyệt đối."},
+            {"Máy Pha Cà Phê Espresso Delonghi Dedica 15 Bar", "5490000", "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600", "Máy pha cafe bán tự động Delonghi áp suất 15 bar chuẩn Ý, tích hợp vòi đánh sữa tạo bọt Cappuccino thơm ngon."}
         };
 
         for (int i = 1; i <= 105; i++) {
             Object[] item = homeCatalog[(i - 1) % homeCatalog.length];
-            String name = (String) item[0] + (i > 12 ? " (Phiên bản " + i + ")" : "");
+            String name = (String) item[0] + (i > 13 ? " (Phiên bản #" + i + ")" : "");
             BigDecimal price = new BigDecimal((String) item[1]);
             String img = (String) item[2];
             String desc = (String) item[3];
