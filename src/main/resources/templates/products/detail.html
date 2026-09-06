@@ -26,11 +26,11 @@
                         <img th:src="${product.imageUrl}" id="mainProductImg" class="img-fluid rounded-3" style="max-height: 380px; object-fit: contain;" alt="Product Image">
                     </div>
                     <!-- Gallery Strip Thumbnails -->
-                    <div class="d-flex justify-content-center gap-2 mb-3">
-                        <img th:src="${product.imageUrl}" class="rounded border p-1 opacity-100 hover:opacity-75 transition" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" alt="Thumb 1">
-                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300" class="rounded border p-1 opacity-75 hover:opacity-100 transition" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" alt="Thumb 2">
-                        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=300" class="rounded border p-1 opacity-75 hover:opacity-100 transition" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" alt="Thumb 3">
-                        <img src="https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=300" class="rounded border p-1 opacity-75 hover:opacity-100 transition" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;" alt="Thumb 4">
+                    <div class="d-flex justify-content-center gap-2 mb-3 product-gallery">
+                        <img th:src="${product.imageUrl}" class="gallery-thumb rounded border border-2 border-primary p-1 opacity-100 transition shadow-sm" style="width: 65px; height: 65px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this)" alt="Góc nhìn 1">
+                        <img th:src="${product.imageUrl}" class="gallery-thumb rounded border p-1 opacity-75 transition" style="width: 65px; height: 65px; object-fit: cover; cursor: pointer; filter: brightness(1.08) contrast(1.05);" onclick="changeMainImage(this)" alt="Góc nhìn 2">
+                        <img th:src="${product.imageUrl}" class="gallery-thumb rounded border p-1 opacity-75 transition" style="width: 65px; height: 65px; object-fit: cover; cursor: pointer; filter: saturate(1.25);" onclick="changeMainImage(this)" alt="Góc nhìn 3">
+                        <img th:src="${product.category.imageUrl != null ? product.category.imageUrl : product.imageUrl}" class="gallery-thumb rounded border p-1 opacity-75 transition" style="width: 65px; height: 65px; object-fit: cover; cursor: pointer;" onclick="changeMainImage(this)" alt="Chi tiết danh mục">
                     </div>
                     <!-- Social Share & Wishlist -->
                     <div class="d-flex align-items-center justify-content-between text-slate-500 small px-3">
@@ -90,21 +90,22 @@
                     </div>
 
                     <!-- Options: Colors & Sizes -->
-                    <div class="mb-3 small">
-                        <div class="row align-items-center mb-2">
-                            <div class="col-3 text-slate-500">Màu Sắc:</div>
+                    <div class="mb-4 small">
+                        <div class="row align-items-center mb-3 option-group">
+                            <div class="col-3 text-slate-500">Màu Sắc: <span class="selected-label fw-bold text-primary ms-1">Vàng</span></div>
                             <div class="col-9 d-flex gap-2 flex-wrap">
-                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3 active">Vàng</button>
-                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3">Xanh Thẫm</button>
-                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3">Trắng</button>
-                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3">Chấm Bi</button>
+                                <button type="button" class="btn btn-sm btn-primary text-white rounded-3 px-3 option-btn active shadow-sm" onclick="selectOption(this, 'color')">Vàng</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 px-3 option-btn" onclick="selectOption(this, 'color')">Xanh Thẫm</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 px-3 option-btn" onclick="selectOption(this, 'color')">Trắng</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 px-3 option-btn" onclick="selectOption(this, 'color')">Chấm Bi</button>
                             </div>
                         </div>
-                        <div class="row align-items-center">
-                            <div class="col-3 text-slate-500">Kích Cỡ:</div>
+                        <div class="row align-items-center option-group">
+                            <div class="col-3 text-slate-500">Kích Cỡ: <span class="selected-label fw-bold text-primary ms-1">Size M (&lt; 58kg)</span></div>
                             <div class="col-9 d-flex gap-2 flex-wrap">
-                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3 active">Size M (&lt; 58kg)</button>
-                                <button class="btn btn-sm btn-outline-secondary rounded-3 px-3">Size L (&lt; 68kg)</button>
+                                <button type="button" class="btn btn-sm btn-primary text-white rounded-3 px-3 option-btn active shadow-sm" onclick="selectOption(this, 'size')">Size M (&lt; 58kg)</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 px-3 option-btn" onclick="selectOption(this, 'size')">Size L (&lt; 68kg)</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary rounded-3 px-3 option-btn" onclick="selectOption(this, 'size')">Size XL (&lt; 78kg)</button>
                             </div>
                         </div>
                     </div>
@@ -296,6 +297,41 @@
         </div>
 
     </div>
+
+    <script>
+        function changeMainImage(thumbElement) {
+            const mainImg = document.getElementById('mainProductImg');
+            if (mainImg && thumbElement) {
+                mainImg.src = thumbElement.src;
+                
+                document.querySelectorAll('.gallery-thumb').forEach(thumb => {
+                    thumb.classList.remove('border-primary', 'border-2', 'shadow-sm', 'opacity-100');
+                    thumb.classList.add('opacity-75');
+                });
+                thumbElement.classList.add('border-primary', 'border-2', 'shadow-sm', 'opacity-100');
+                thumbElement.classList.remove('opacity-75');
+            }
+        }
+
+        function selectOption(buttonElement, groupType) {
+            if (!buttonElement) return;
+            const container = buttonElement.closest('.option-group');
+            if (container) {
+                container.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.classList.remove('btn-primary', 'text-white', 'active', 'shadow-sm');
+                    btn.classList.add('btn-outline-secondary');
+                });
+                
+                buttonElement.classList.remove('btn-outline-secondary');
+                buttonElement.classList.add('btn-primary', 'text-white', 'active', 'shadow-sm');
+
+                const labelSpan = container.querySelector('.selected-label');
+                if (labelSpan) {
+                    labelSpan.textContent = buttonElement.textContent.trim();
+                }
+            }
+        }
+    </script>
 
     <div th:replace="~{layout/main :: footer}"></div>
 </body>
