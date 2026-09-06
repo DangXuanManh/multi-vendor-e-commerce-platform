@@ -12,6 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mycompany.tmdd_java.entity.Product;
+import com.mycompany.tmdd_java.entity.Review;
+import com.mycompany.tmdd_java.service.ProductService;
+import com.mycompany.tmdd_java.service.ReviewService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.List;
 
 @Controller
@@ -20,10 +28,14 @@ public class CustomerController {
 
     private final OrderService orderService;
     private final UserService userService;
+    private final ProductService productService;
+    private final ReviewService reviewService;
 
-    public CustomerController(OrderService orderService, UserService userService) {
+    public CustomerController(OrderService orderService, UserService userService, ProductService productService, ReviewService reviewService) {
         this.orderService = orderService;
         this.userService = userService;
+        this.productService = productService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping("/orders")
@@ -50,5 +62,27 @@ public class CustomerController {
 
         model.addAttribute("order", order);
         return "customer/order-detail";
+    }
+
+    @PostMapping("/reviews/add")
+    public String addReview(@RequestParam Long productId,
+                            @RequestParam Integer rating,
+                            @RequestParam String comment,
+                            @AuthenticationPrincipal UserDetails userDetails,
+                            RedirectAttributes redirectAttributes) {
+        if (userDetails == null) {
+            return "redirect:/login";
+        }
+        User customer = userService.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Người dùng không tồn tại"));
+
+        Product product = productService.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Sản phẩm không tồn tại id: " + productId));
+
+        Review review = new Review(rating, comment, customer, product);
+        reviewService.save(review);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Cảm ơn bạn đã gửi đánh giá cho sản phẩm!");
+        return "redirect:/products/" + productId;
     }
 }

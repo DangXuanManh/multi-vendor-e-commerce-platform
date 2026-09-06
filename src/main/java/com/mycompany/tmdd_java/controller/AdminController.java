@@ -142,4 +142,24 @@ public class AdminController {
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật cấu hình website thành công!");
         return "redirect:/admin/settings";
     }
+
+    @GetMapping("/products")
+    public String listProducts(Model model) {
+        model.addAttribute("products", productService.findAllActive());
+        return "admin/products";
+    }
+
+    @PostMapping("/products/approve/{id}")
+    public String approveProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        productService.approveProduct(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Phê duyệt sản phẩm thành công!");
+        return "redirect:/admin/vendors";
+    }
+
+    @PostMapping("/products/reject/{id}")
+    public String rejectProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        productService.rejectProduct(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Đã từ chối sản phẩm!");
+        return "redirect:/admin/vendors";
+    }
 }

@@ -2,10 +2,12 @@ package com.mycompany.tmdd_java.controller;
 
 import com.mycompany.tmdd_java.entity.Category;
 import com.mycompany.tmdd_java.entity.Product;
+import com.mycompany.tmdd_java.entity.Review;
 import com.mycompany.tmdd_java.entity.Shop;
 import com.mycompany.tmdd_java.entity.ShopStatus;
 import com.mycompany.tmdd_java.service.CategoryService;
 import com.mycompany.tmdd_java.service.ProductService;
+import com.mycompany.tmdd_java.service.ReviewService;
 import com.mycompany.tmdd_java.service.ShopService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,11 +29,13 @@ public class HomeController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final ShopService shopService;
+    private final ReviewService reviewService;
 
-    public HomeController(ProductService productService, CategoryService categoryService, ShopService shopService) {
+    public HomeController(ProductService productService, CategoryService categoryService, ShopService shopService, ReviewService reviewService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.shopService = shopService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping("/")
@@ -92,10 +96,15 @@ public class HomeController {
         Pageable limit6 = PageRequest.of(0, 6, Sort.by("id").descending());
         List<Product> shopProducts = productService.findByShopPaginated(product.getShop().getId(), limit6).getContent();
         List<Product> categoryProducts = productService.findByCategoryPaginated(product.getCategory().getId(), limit6).getContent();
+        List<Review> reviews = reviewService.findByProductId(id);
+        Double averageRating = reviewService.getAverageRatingByProductId(id);
 
         model.addAttribute("product", product);
         model.addAttribute("shopProducts", shopProducts);
         model.addAttribute("categoryProducts", categoryProducts);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("averageRating", averageRating);
+        model.addAttribute("reviewCount", reviews.size());
         return "products/detail";
     }
 

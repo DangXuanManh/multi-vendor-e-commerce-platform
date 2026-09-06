@@ -25,4 +25,6 @@ public interface ProductService {
     void deleteProduct(Long productId, Long shopId);
     long countByShop(Long shopId);
     long countTotalProducts();
+    void approveProduct(Long id);
+    void rejectProduct(Long id);
 }

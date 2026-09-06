@@ -96,4 +96,22 @@ public class ProductServiceImpl implements ProductService {
     public long countTotalProducts() {
         return productRepository.count();
     }
+
+    @Override
+    @Transactional
+    public void approveProduct(Long id) {
+        productRepository.findById(id).ifPresent(p -> {
+            p.setStatus(ProductStatus.ACTIVE);
+            productRepository.save(p);
+        });
+    }
+
+    @Override
+    @Transactional
+    public void rejectProduct(Long id) {
+        productRepository.findById(id).ifPresent(p -> {
+            p.setStatus(ProductStatus.REJECTED);
+            productRepository.save(p);
+        });
+    }
 }

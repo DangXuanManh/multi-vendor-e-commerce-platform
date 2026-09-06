@@ -18,6 +18,7 @@ public class DataInitializer implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final ReviewRepository reviewRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataInitializer(UserRepository userRepository,
@@ -25,12 +26,14 @@ public class DataInitializer implements CommandLineRunner {
                            CategoryRepository categoryRepository,
                            ProductRepository productRepository,
                            OrderRepository orderRepository,
+                           ReviewRepository reviewRepository,
                            PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.shopRepository = shopRepository;
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
+        this.reviewRepository = reviewRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -228,6 +231,13 @@ public class DataInitializer implements CommandLineRunner {
         sampleOrder.addItem(item1);
         sampleOrder.addItem(item2);
         orderRepository.save(sampleOrder);
+
+        // 6. Create Sample Reviews
+        if (reviewRepository != null && savedProducts.size() > 0) {
+            reviewRepository.save(new Review(5, "Sản phẩm dùng rất tốt, đóng gói cẩn thận, giao hàng nhanh chóng!", customer1, savedProducts.get(0)));
+            reviewRepository.save(new Review(4, "Chất lượng chính hãng, nhân viên tư vấn nhiệt tình.", customer1, savedProducts.get(1)));
+            reviewRepository.save(new Review(5, "Rất hài lòng với gian hàng JVTech, sẽ tiếp tục ủng hộ shop!", customer1, savedProducts.get(105)));
+        }
 
         System.out.println(">>> Data Initialization Finished Successfully! Total Realistic Products Seeded: " + savedProducts.size());
     }
