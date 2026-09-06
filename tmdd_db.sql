@@ -153,13 +153,19 @@ BEGIN
             'Sản phẩm công nghệ cao cấp chính hãng nhập khẩu bảo hành 12-24 tháng toàn quốc.',
             (1500000.00 + (i * 350000.00)),
             (15 + (i % 25)),
-            ELT(((i-1) MOD 6) + 1,
+            ELT(((i-1) MOD 12) + 1,
                 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600',
                 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600',
                 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=600',
                 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=600',
                 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600',
-                'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600'
+                'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600',
+                'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600',
+                'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=600',
+                'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=600',
+                'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600',
+                'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600',
+                'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600'
             ),
             'ACTIVE', 1, 1, NOW()
         );
@@ -184,12 +190,19 @@ BEGIN
             'Thời trang cao cấp chất liệu đắt giá phom dáng tôn vẻ sang trọng hiện đại.',
             (190000.00 + (i * 25000.00)),
             (20 + (i % 30)),
-            ELT(((i-1) MOD 5) + 1,
+            ELT(((i-1) MOD 12) + 1,
                 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600',
                 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=600',
                 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600',
                 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600',
-                'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600'
+                'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=600',
+                'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600',
+                'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600',
+                'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600',
+                'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600',
+                'https://images.unsplash.com/photo-1627123424574-724758594e93?w=600',
+                'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600',
+                'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=600'
             ),
             'ACTIVE', 2, 2, NOW()
         );
@@ -214,11 +227,19 @@ BEGIN
             'Thiết bị gia dụng căn bếp tiện nghi giải pháp cho không gian sống hiện đại.',
             (350000.00 + (i * 45000.00)),
             (15 + (i % 20)),
-            ELT(((i-1) MOD 4) + 1,
+            ELT(((i-1) MOD 12) + 1,
                 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600',
                 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600',
-                'https://images.unsplash.com/photo-1585336261026-875a60a1c92f?w=600',
-                'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=600'
+                'https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600',
+                'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?w=600',
+                'https://images.unsplash.com/photo-1622484210800-885107928926?w=600',
+                'https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=600',
+                'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=600',
+                'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600',
+                'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600',
+                'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=600',
+                'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=600',
+                'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600'
             ),
             'ACTIVE', 3, 3, NOW()
         );

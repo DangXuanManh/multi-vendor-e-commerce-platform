@@ -40,6 +40,7 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (userRepository.count() > 0) {
+            updateExistingProductImages();
             return; // Data already initialized
         }
 
@@ -246,5 +247,52 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         System.out.println(">>> Data Initialization Finished Successfully! Total Realistic Products Seeded: " + savedProducts.size());
+    }
+
+    private void updateExistingProductImages() {
+        List<Product> products = productRepository.findAll();
+        boolean updated = false;
+        for (Product p : products) {
+            String name = p.getName();
+            if (name == null) continue;
+            
+            String newImg = null;
+            if (name.contains("Quạt Điều Hòa")) {
+                newImg = "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600";
+            } else if (name.contains("Nồi Cơm Điện")) {
+                newImg = "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=600";
+            } else if (name.contains("Máy Xay Sinh Tố")) {
+                newImg = "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=600";
+            } else if (name.contains("Lò Vi Sóng")) {
+                newImg = "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=600";
+            } else if (name.contains("Máy Ép Trái Cây")) {
+                newImg = "https://images.unsplash.com/photo-1622484210800-885107928926?w=600";
+            } else if (name.contains("Bình Đun Siêu Tốc")) {
+                newImg = "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f6?w=600";
+            } else if (name.contains("Máy Lọc Không Khí")) {
+                newImg = "https://images.unsplash.com/photo-1616627547584-bf28cee262db?w=600";
+            } else if (name.contains("Robot Hút Bụi")) {
+                newImg = "https://images.unsplash.com/photo-1558317374-067fb5f30001?w=600";
+            } else if (name.contains("Nồi Chiên Không Dầu")) {
+                newImg = "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?w=600";
+            } else if (name.contains("Bàn Ủi Hơi Nước")) {
+                newImg = "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?w=600";
+            } else if (name.contains("Bộ Nồi Inox")) {
+                newImg = "https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=600";
+            } else if (name.contains("Đèn Học Chống Cận")) {
+                newImg = "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600";
+            } else if (name.contains("Máy Pha Cà Phê")) {
+                newImg = "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600";
+            }
+
+            if (newImg != null && !newImg.equals(p.getImageUrl())) {
+                p.setImageUrl(newImg);
+                updated = true;
+            }
+        }
+        if (updated) {
+            productRepository.saveAll(products);
+            System.out.println(">>> Updated legacy product images in MySQL database successfully!");
+        }
     }
 }
