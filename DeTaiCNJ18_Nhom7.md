@@ -13,60 +13,6 @@
   - 1.4. Phương pháp thực hiện
   - 1.5. Ý nghĩa của đề tài
   - 1.6. Bố cục báo cáo
-- CHƯƠNG 2. CƠ SỞ LÝ THUYẾT
-  - 2.1. Tổng quan thương mại điện tử
-  - 2.2. Mô hình Multi-Vendor Marketplace
-  - 2.3. Java và Spring Boot
-  - 2.4. Spring Security
-  - 2.5. Spring Data JPA / Hibernate
-  - 2.6. Thymeleaf
-  - 2.7. MySQL
-  - 2.8. Mô hình MVC
-  - 2.9. Kiến trúc hệ thống
-- CHƯƠNG 3. PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
-  - 3.1. Khảo sát yêu cầu
-  - 3.2. Phân tích tác nhân (Admin, Seller/Nhà bán hàng, Customer/Khách hàng)
-  - 3.3. Yêu cầu chức năng
-  - 3.4. Yêu cầu phi chức năng
-  - 3.5. Use Case Diagram
-  - 3.6. Activity Diagram
-  - 3.7. Sequence Diagram
-  - 3.8. Class Diagram
-  - 3.9. Thiết kế cơ sở dữ liệu
-  - 3.10. Mô hình ERD
-- CHƯƠNG 4. XÂY DỰNG HỆ THỐNG
-  - 4.1. Cấu trúc project Spring Boot
-  - 4.2. Cấu hình MySQL
-  - 4.3. Xây dựng Entity
-  - 4.4. Repository
-  - 4.5. Service
-  - 4.6. Controller
-  - 4.7. Spring Security và phân quyền
-  - 4.8. Xây dựng giao diện Thymeleaf
-  - 4.9. Quản lý sản phẩm
-  - 4.10. Quản lý nhà bán hàng
-  - 4.11. Quản lý khách hàng
-  - 4.12. Giỏ hàng
-  - 4.13. Đặt hàng
-  - 4.14. Quản lý đơn hàng
-  - 4.15. Quản lý danh mục
-  - 4.16. Quản lý tài khoản
-  - 4.17. Thống kê và quản trị
-- CHƯƠNG 5. KIỂM THỬ VÀ ĐÁNH GIÁ
-  - 5.1. Môi trường kiểm thử
-  - 5.2. Kiểm thử đăng nhập
-  - 5.3. Kiểm thử phân quyền
-  - 5.4. Kiểm thử quản lý sản phẩm
-  - 5.5. Kiểm thử đặt hàng
-  - 5.6. Kiểm thử quản lý đơn hàng
-  - 5.7. Kiểm thử dữ liệu
-  - 5.8. Kết quả đạt được
-  - 5.9. Hạn chế
-- CHƯƠNG 6. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
-  - 6.1. Kết quả đạt được
-  - 6.2. Hạn chế
-  - 6.3. Hướng phát triển
-- TÀI LIỆU THAM KHẢO
 
 ---
 
@@ -88,27 +34,15 @@ Mô hình Sàn thương mại điện tử đa nhà bán mang lại lợi thế 
 - Đối tượng: Java 17 LTS, Spring Boot 3.1.5, Spring Security 6, Spring Data JPA, Thymeleaf 3, MySQL 8.
 - Phạm vi: Phân hệ Admin, Vendor, Customer với đầy đủ các nghiệp vụ quản lý tài khoản, shop, sản phẩm, giỏ hàng, đặt hàng, tách đơn, đánh giá và thống kê.
 
----
+### 1.4. Phương pháp thực hiện
+1. Nghiên cứu tài liệu chính thức (Oracle Java SE 17, Spring Boot, Spring Security, MySQL).
+2. Phân tích thiết kế hệ thống (UML Use Case, Activity, Sequence, Class Diagram, ERD).
+3. Phát triển phần mềm Agile/Scrum theo các sprint tính năng.
+4. Kiểm thử phần mềm (Ma trận Test Cases).
 
-## CHƯƠNG 2. CƠ SỞ LÝ THUYẾT
-Ứng dụng Java 17 LTS, Spring Boot 3.1.5, Spring Security 6, Spring Data JPA, Hibernate 6, Thymeleaf 3, MySQL 8.
+### 1.5. Ý nghĩa của đề tài
+- Ý nghĩa học thuật: Nắm vững tư duy thiết kế phần mềm doanh nghiệp, làm chủ Spring IoC, DI, ORM Mapping, Spring Security FilterChain.
+- Ý nghĩa thực tiễn: Cung cấp giải pháp mã nguồn Web Sàn thương mại điện tử đa nhà bán sẵn sàng triển khai cho các doanh nghiệp vừa và nhỏ.
 
----
-
-## CHƯƠNG 3. PHÂN TÍCH VÀ THIẾT KẾ HỆ THỐNG
-Hệ thống phân quyền 3 tác nhân Admin, Vendor, Customer với CSDL 8 bảng quan hệ chuẩn 3NF.
-
----
-
-## CHƯƠNG 4. XÂY DỰNG HỆ THỐNG
-Mã nguồn gồm 53 tập tin Java trong package `com.mycompany.tmdd_java`.
-
----
-
-## CHƯƠNG 5. KIỂM THỬ VÀ ĐÁNH GIÁ
-100% 45 ma trận test case đạt kết quả PASSED.
-
----
-
-## CHƯƠNG 6. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
-Dự án hoàn thành xuất sắc các yêu cầu kỹ thuật đề ra.
+### 1.6. Bố cục báo cáo
+Báo cáo tập trung trình bày chi tiết Chương 1: Tổng quan đề tài.
