@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <!-- SECTION 1: INTERACTIVE CHARTS & ANALYTICS (REAL DATA) -->
+        <!-- SECTION 1: INTERACTIVE CHARTS & ANALYTICS (EXACT MONTHLY REAL DATA) -->
         <div class="row g-4 mb-4">
             <!-- SVG Bar & Line Chart: Monthly Revenue & Platform Commission -->
             <div class="col-lg-8">
@@ -103,16 +103,16 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
                             <h5 class="fw-bold text-slate-800 mb-0"><i class="fa-solid fa-chart-area text-primary me-2"></i>Biểu Đồ Doanh Số &amp; Hoa Hồng Sàn Theo Tháng (2026)</h5>
-                            <small class="text-muted">Tăng trưởng doanh thu thực tế từ cơ sở dữ liệu (Cột xanh) &amp; Phí hoa hồng 5% (Đường xanh lá)</small>
+                            <small class="text-muted">Doanh thu thực tế theo tháng trong MySQL (Tháng hiện tại: Tháng <span th:text="${currentMonth}">9</span>/2026; (*) Các tháng tương lai chưa phát sinh)</small>
                         </div>
-                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold"><i class="fa-solid fa-calendar-days me-1"></i>Năm 2026</span>
+                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold"><i class="fa-solid fa-calendar-days me-1"></i>Tháng <span th:text="${currentMonth}">9</span>/2026</span>
                     </div>
 
                     <!-- Legend -->
                     <div class="d-flex gap-4 mb-2 small fw-bold justify-content-center">
                         <div class="d-flex align-items-center gap-2">
                             <span style="display:inline-block; width:16px; height:12px; background-color:#2563eb; border-radius:3px;"></span>
-                            <span>Doanh Số Sàn (VNĐ)</span>
+                            <span>Doanh Số Thường Thực Tế (VNĐ)</span>
                         </div>
                         <div class="d-flex align-items-center gap-2">
                             <span style="display:inline-block; width:16px; height:4px; background-color:#10b981; border-radius:2px;"></span>
@@ -120,7 +120,7 @@
                         </div>
                     </div>
 
-                    <!-- SVG Interactive Chart -->
+                    <!-- SVG Interactive Chart Dynamic -->
                     <div class="w-100" style="height: 300px;">
                         <svg viewBox="0 0 900 320" preserveAspectRatio="none" style="width:100%; height:100%;">
                             <!-- Grid lines -->
@@ -131,72 +131,68 @@
                             <line x1="60" y1="260" x2="880" y2="260" stroke="#e2e8f0" stroke-width="2"/>
 
                             <!-- Y Axis Labels -->
-                            <text x="50" y="45" font-size="11" fill="#64748b" text-anchor="end">400 Tr</text>
-                            <text x="50" y="100" font-size="11" fill="#64748b" text-anchor="end">300 Tr</text>
-                            <text x="50" y="155" font-size="11" fill="#64748b" text-anchor="end">200 Tr</text>
-                            <text x="50" y="210" font-size="11" fill="#64748b" text-anchor="end">100 Tr</text>
+                            <text x="50" y="45" font-size="11" fill="#64748b" text-anchor="end" th:text="${#numbers.formatDecimal(maxMonthlyRev, 0, 'COMMA', 0, 'POINT')} + ' đ'"></text>
+                            <text x="50" y="155" font-size="11" fill="#64748b" text-anchor="end" th:text="${#numbers.formatDecimal(maxMonthlyRev.divide(new java.math.BigDecimal('2')), 0, 'COMMA', 0, 'POINT')} + ' đ'"></text>
                             <text x="50" y="265" font-size="11" fill="#64748b" text-anchor="end">0 đ</text>
 
-                            <!-- Bars for Monthly Sales (12 Months) -->
-                            <rect x="80" y="252" width="30" height="8" rx="4" fill="#3b82f6"><title>Tháng 1: 15.000.000 đ</title></rect>
-                            <rect x="146" y="245" width="30" height="15" rx="4" fill="#3b82f6"><title>Tháng 2: 28.000.000 đ</title></rect>
-                            <rect x="212" y="237" width="30" height="23" rx="4" fill="#3b82f6"><title>Tháng 3: 42.000.000 đ</title></rect>
-                            <rect x="278" y="230" width="30" height="30" rx="4" fill="#3b82f6"><title>Tháng 4: 55.000.000 đ</title></rect>
-                            <rect x="344" y="223" width="30" height="37" rx="4" fill="#3b82f6"><title>Tháng 5: 68.000.000 đ</title></rect>
-                            <rect x="410" y="219" width="30" height="41" rx="4" fill="#3b82f6"><title>Tháng 6: 75.000.000 đ</title></rect>
-                            <rect x="476" y="211" width="30" height="49" rx="4" fill="#3b82f6"><title>Tháng 7: 89.000.000 đ</title></rect>
-                            <rect x="542" y="209" width="30" height="51" rx="4" fill="#3b82f6"><title>Tháng 8: 92.000.000 đ</title></rect>
-                            <rect x="608" y="198" width="30" height="62" rx="4" fill="#3b82f6"><title>Tháng 9: 112.000.000 đ</title></rect>
-                            <rect x="674" y="186" width="30" height="74" rx="4" fill="#3b82f6"><title>Tháng 10: 135.000.000 đ</title></rect>
-                            <rect x="740" y="172" width="30" height="88" rx="4" fill="#3b82f6"><title>Tháng 11: 160.000.000 đ</title></rect>
-                            <rect x="806" y="33" width="30" height="227" rx="4" fill="#2563eb"><title th:text="'Tháng 12 (Real DB): ' + ${#numbers.formatDecimal(totalPlatformRevenue, 0, 'COMMA', 0, 'POINT')} + ' đ'"></title></rect>
-                            
-                            <!-- Highlight value above T12 bar from Real Database Total -->
-                            <text x="821" y="25" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="middle" th:text="${#numbers.formatDecimal(totalPlatformRevenue, 0, 'COMMA', 0, 'POINT')} + ' đ'">412.18M</text>
+                            <!-- Dynamic Bars for Monthly Sales (12 Months) -->
+                            <g th:each="m : ${monthChartList}">
+                                <!-- Bars for Realized Months -->
+                                <rect th:unless="${m.isFuture}"
+                                      th:x="${m.barX}"
+                                      th:y="${m.barY}"
+                                      width="30"
+                                      th:height="${m.barHeight}"
+                                      rx="4"
+                                      th:fill="${m.isCurrent ? '#2563eb' : '#3b82f6'}">
+                                    <title th:text="${m.label} + ': ' + ${#numbers.formatDecimal(m.revenue, 0, 'COMMA', 0, 'POINT')} + ' đ'"></title>
+                                </rect>
 
-                            <!-- Polyline Line Chart for 5% Platform Commission -->
-                            <polyline points="
-                                95,257
-                                161,254
-                                227,249
-                                293,245
-                                359,241
-                                425,239
-                                491,235
-                                557,234
-                                623,228
-                                689,221
-                                755,213
-                                821,147
-                            " fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                <!-- Future Month Indicator (Months > currentMonth) -->
+                                <rect th:if="${m.isFuture}"
+                                      th:x="${m.barX}"
+                                      y="256"
+                                      width="30"
+                                      height="4"
+                                      rx="2"
+                                      fill="#cbd5e1">
+                                    <title th:text="${m.label} + ' (Tương lai - Chưa phát sinh)'"></title>
+                                </rect>
 
-                            <!-- Line Points -->
-                            <circle cx="95" cy="257" r="4" fill="#10b981"/>
-                            <circle cx="161" cy="254" r="4" fill="#10b981"/>
-                            <circle cx="227" cy="249" r="4" fill="#10b981"/>
-                            <circle cx="293" cy="245" r="4" fill="#10b981"/>
-                            <circle cx="359" cy="241" r="4" fill="#10b981"/>
-                            <circle cx="425" cy="239" r="4" fill="#10b981"/>
-                            <circle cx="491" cy="235" r="4" fill="#10b981"/>
-                            <circle cx="557" cy="234" r="4" fill="#10b981"/>
-                            <circle cx="623" cy="228" r="4" fill="#10b981"/>
-                            <circle cx="689" cy="221" r="4" fill="#10b981"/>
-                            <circle cx="755" cy="213" r="4" fill="#10b981"/>
-                            <circle cx="821" cy="147" r="6" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
+                                <!-- Value Label above Bar -->
+                                <text th:if="${m.revenue > 0}"
+                                      th:x="${m.cx}"
+                                      th:y="${m.barY - 8}"
+                                      font-size="10"
+                                      font-weight="bold"
+                                      fill="#2563eb"
+                                      text-anchor="middle"
+                                      th:text="${#numbers.formatDecimal(m.revenue, 0, 'COMMA', 0, 'POINT')} + ' đ'"></text>
 
-                            <!-- X Axis Month Labels -->
-                            <text x="95" y="282" font-size="11" fill="#475569" text-anchor="middle">T1</text>
-                            <text x="161" y="282" font-size="11" fill="#475569" text-anchor="middle">T2</text>
-                            <text x="227" y="282" font-size="11" fill="#475569" text-anchor="middle">T3</text>
-                            <text x="293" y="282" font-size="11" fill="#475569" text-anchor="middle">T4</text>
-                            <text x="359" y="282" font-size="11" fill="#475569" text-anchor="middle">T5</text>
-                            <text x="425" y="282" font-size="11" fill="#475569" text-anchor="middle">T6</text>
-                            <text x="491" y="282" font-size="11" fill="#475569" text-anchor="middle">T7</text>
-                            <text x="557" y="282" font-size="11" fill="#475569" text-anchor="middle">T8</text>
-                            <text x="623" y="282" font-size="11" fill="#475569" text-anchor="middle">T9</text>
-                            <text x="689" y="282" font-size="11" fill="#475569" text-anchor="middle">T10</text>
-                            <text x="755" y="282" font-size="11" fill="#475569" text-anchor="middle">T11</text>
-                            <text x="821" y="282" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="middle">T12</text>
+                                <!-- X Axis Month Labels -->
+                                <text th:x="${m.cx}"
+                                      y="282"
+                                      font-size="11"
+                                      th:fill="${m.isCurrent ? '#2563eb' : (m.isFuture ? '#94a3b8' : '#475569')}"
+                                      th:font-weight="${m.isCurrent ? 'bold' : 'normal'}"
+                                      text-anchor="middle"
+                                      th:text="${m.label} + (${m.isFuture} ? ' (*)' : '')"></text>
+                            </g>
+
+                            <!-- Dynamic Polyline Line Chart for 5% Platform Commission -->
+                            <polyline th:attr="points=${polylinePoints}"
+                                      fill="none"
+                                      stroke="#10b981"
+                                      stroke-width="3"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+
+                            <!-- Commission Points for non-future months -->
+                            <g th:each="m : ${monthChartList}" th:unless="${m.isFuture}">
+                                <circle th:cx="${m.cx}" th:cy="${m.cy}" th:r="${m.isCurrent ? 6 : 4}" fill="#10b981" th:stroke="${m.isCurrent ? '#ffffff' : 'none'}" stroke-width="2">
+                                    <title th:text="'Hoa hồng 5% ' + ${m.label} + ': ' + ${#numbers.formatDecimal(m.commission, 0, 'COMMA', 0, 'POINT')} + ' đ'"></title>
+                                </circle>
+                            </g>
                         </svg>
                     </div>
                 </div>

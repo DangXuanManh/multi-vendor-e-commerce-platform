@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,6 +43,46 @@ public class AdminController {
         this.orderService = orderService;
         this.categoryService = categoryService;
         this.siteSettingService = siteSettingService;
+    }
+
+    public static class MonthChartData {
+        private String label;
+        private int monthNum;
+        private BigDecimal revenue;
+        private BigDecimal commission;
+        private int barHeight;
+        private int barY;
+        private int cx;
+        private int cy;
+        private int barX;
+        private boolean isFuture;
+        private boolean isCurrent;
+
+        public MonthChartData(String label, int monthNum, BigDecimal revenue, BigDecimal commission, int barHeight, int barY, int cx, int cy, int barX, boolean isFuture, boolean isCurrent) {
+            this.label = label;
+            this.monthNum = monthNum;
+            this.revenue = revenue;
+            this.commission = commission;
+            this.barHeight = barHeight;
+            this.barY = barY;
+            this.cx = cx;
+            this.cy = cy;
+            this.barX = barX;
+            this.isFuture = isFuture;
+            this.isCurrent = isCurrent;
+        }
+
+        public String getLabel() { return label; }
+        public int getMonthNum() { return monthNum; }
+        public BigDecimal getRevenue() { return revenue; }
+        public BigDecimal getCommission() { return commission; }
+        public int getBarHeight() { return barHeight; }
+        public int getBarY() { return barY; }
+        public int getCx() { return cx; }
+        public int getCy() { return cy; }
+        public int getBarX() { return barX; }
+        public boolean isFuture() { return isFuture; }
+        public boolean isCurrent() { return isCurrent; }
     }
 
     @GetMapping("/dashboard")
@@ -73,7 +114,6 @@ public class AdminController {
         int completedPct = (int) Math.round((double) completedOrdersCount * 100 / denominator);
         int cancelledPct = (int) Math.round((double) cancelledOrdersCount * 100 / denominator);
 
-        // Fallback percentages if orders table is fresh so chart is populated gracefully
         if (totalOrders == 0) {
             pendingPct = 15;
             processingPct = 20;
@@ -144,10 +184,10 @@ public class AdminController {
                 ? Math.round((double) repeatCustomers * 1000.0 / totalUsers) / 10.0
                 : 0.0;
 
-        // 4. Monthly Revenue Array (1..12) (Real DB Data)
-        BigDecimal[] monthlyRevenues = new BigDecimal[12];
-        BigDecimal[] monthlyCommissions = new BigDecimal[12];
-        BigDecimal maxMonthlyRev = BigDecimal.ONE;
+        // 4. Monthly Revenue Array (1..12) (Exact Real Month Calculation)
+        int currentMonth = LocalDateTime.now().getMonthValue(); // Month 9 (September)
+        BigDecimal[] rawMonthlyRevenues = new BigDecimal[12];
+        BigDecimal maxMonthlyRev = BigDecimal.ZERO;
 
         for (int i = 0; i < 12; i++) {
             final int monthNum = i + 1;
@@ -155,10 +195,51 @@ public class AdminController {
                     .filter(o -> o.getOrderDate() != null && o.getOrderDate().getMonthValue() == monthNum)
                     .map(Order::getTotalAmount)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
-            monthlyRevenues[i] = mRev;
-            monthlyCommissions[i] = mRev.multiply(new BigDecimal("0.05"));
+            rawMonthlyRevenues[i] = mRev;
             if (mRev.compareTo(maxMonthlyRev) > 0) {
                 maxMonthlyRev = mRev;
+            }
+        }
+
+        if (maxMonthlyRev.compareTo(BigDecimal.ZERO) == 0) {
+            maxMonthlyRev = new BigDecimal("1000000"); // Avoid division by zero
+        }
+
+        List<MonthChartData> monthChartList = new ArrayList<>();
+        StringBuilder polylinePoints = new StringBuilder();
+
+        for (int i = 0; i < 12; i++) {
+            int monthNum = i + 1;
+            String label = "T" + monthNum;
+            BigDecimal rev = rawMonthlyRevenues[i];
+            BigDecimal comm = rev.multiply(new BigDecimal("0.05"));
+
+            boolean isFuture = monthNum > currentMonth;
+            boolean isCurrent = monthNum == currentMonth;
+
+            int barX = 80 + (i * 66);
+            int cx = barX + 15;
+            int barHeight = 0;
+            int barY = 260;
+            int cy = 260;
+
+            if (!isFuture && rev.compareTo(BigDecimal.ZERO) > 0) {
+                double ratio = rev.doubleValue() / maxMonthlyRev.doubleValue();
+                barHeight = (int) Math.round(ratio * 210);
+                if (barHeight < 8) barHeight = 8;
+                barY = 260 - barHeight;
+                cy = 260 - (int) Math.round(ratio * 120);
+            } else if (!isFuture) {
+                barHeight = 2; // Flat baseline for past months with 0 revenue
+                barY = 258;
+                cy = 258;
+            }
+
+            monthChartList.add(new MonthChartData(label, monthNum, rev, comm, barHeight, barY, cx, cy, barX, isFuture, isCurrent));
+
+            if (!isFuture) {
+                if (polylinePoints.length() > 0) polylinePoints.append(" ");
+                polylinePoints.append(cx).append(",").append(cy);
             }
         }
 
@@ -188,8 +269,9 @@ public class AdminController {
         model.addAttribute("retentionRate", retentionRate);
         model.addAttribute("vipCount", vipCount);
 
-        model.addAttribute("monthlyRevenues", monthlyRevenues);
-        model.addAttribute("monthlyCommissions", monthlyCommissions);
+        model.addAttribute("monthChartList", monthChartList);
+        model.addAttribute("polylinePoints", polylinePoints.toString());
+        model.addAttribute("currentMonth", currentMonth);
         model.addAttribute("maxMonthlyRev", maxMonthlyRev);
 
         model.addAttribute("users", allUsers);
