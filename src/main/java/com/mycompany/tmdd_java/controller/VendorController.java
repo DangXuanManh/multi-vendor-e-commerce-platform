@@ -72,7 +72,7 @@ public class VendorController {
     }
 
     @GetMapping("/products/edit/{id}")
-    public String editProductForm(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+    public String editProductForm(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
         Shop shop = getVendorShop(userDetails);
         Product product = productService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Sản phẩm không tồn tại id: " + id));
@@ -88,8 +88,8 @@ public class VendorController {
     }
 
     @PostMapping("/products/save")
-    public String saveProduct(@ModelAttribute Product product,
-                              @RequestParam Long categoryId,
+    public String saveProduct(@ModelAttribute("product") Product product,
+                              @RequestParam("categoryId") Long categoryId,
                               @AuthenticationPrincipal UserDetails userDetails,
                               RedirectAttributes redirectAttributes) {
         Shop shop = getVendorShop(userDetails);
@@ -118,7 +118,7 @@ public class VendorController {
     }
 
     @PostMapping("/products/delete/{id}")
-    public String deleteProduct(@PathVariable Long id,
+    public String deleteProduct(@PathVariable("id") Long id,
                                 @AuthenticationPrincipal UserDetails userDetails,
                                 RedirectAttributes redirectAttributes) {
         Shop shop = getVendorShop(userDetails);
@@ -142,8 +142,8 @@ public class VendorController {
     }
 
     @PostMapping("/orders/update-status")
-    public String updateOrderStatus(@RequestParam Long orderItemId,
-                                    @RequestParam OrderStatus status,
+    public String updateOrderStatus(@RequestParam("orderItemId") Long orderItemId,
+                                    @RequestParam("status") OrderStatus status,
                                     @AuthenticationPrincipal UserDetails userDetails,
                                     RedirectAttributes redirectAttributes) {
         Shop shop = getVendorShop(userDetails);
@@ -164,11 +164,11 @@ public class VendorController {
     }
 
     @PostMapping("/shop/update")
-    public String updateShopProfile(@RequestParam String name,
-                                    @RequestParam String description,
-                                    @RequestParam String address,
-                                    @RequestParam String contactPhone,
-                                    @RequestParam(required = false) String logoUrl,
+    public String updateShopProfile(@RequestParam("name") String name,
+                                    @RequestParam("description") String description,
+                                    @RequestParam("address") String address,
+                                    @RequestParam("contactPhone") String contactPhone,
+                                    @RequestParam(name = "logoUrl", required = false) String logoUrl,
                                     @AuthenticationPrincipal UserDetails userDetails,
                                     RedirectAttributes redirectAttributes) {
         Shop shop = getVendorShop(userDetails);

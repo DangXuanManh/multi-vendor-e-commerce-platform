@@ -49,7 +49,7 @@ public class CustomerController {
     }
 
     @GetMapping("/orders/{id}")
-    public String orderDetail(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
+    public String orderDetail(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails, Model model) {
         User customer = userService.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Người dùng không tồn tại"));
 
@@ -65,9 +65,9 @@ public class CustomerController {
     }
 
     @PostMapping("/reviews/add")
-    public String addReview(@RequestParam Long productId,
-                            @RequestParam Integer rating,
-                            @RequestParam String comment,
+    public String addReview(@RequestParam("productId") Long productId,
+                            @RequestParam("rating") Integer rating,
+                            @RequestParam("comment") String comment,
                             @AuthenticationPrincipal UserDetails userDetails,
                             RedirectAttributes redirectAttributes) {
         if (userDetails == null) {

@@ -201,7 +201,7 @@ public class AdminController {
     }
 
     @GetMapping("/vendors")
-    public String listVendors(@RequestParam(required = false) String status, Model model) {
+    public String listVendors(@RequestParam(name = "status", required = false) String status, Model model) {
         List<Shop> shops;
         if (status != null && !status.isBlank()) {
             try {
@@ -219,14 +219,14 @@ public class AdminController {
     }
 
     @PostMapping("/vendors/approve/{id}")
-    public String approveVendor(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String approveVendor(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         shopService.approveShop(id);
         redirectAttributes.addFlashAttribute("successMessage", "Đã duyệt cửa hàng thành công!");
         return "redirect:/admin/vendors";
     }
 
     @PostMapping("/vendors/reject/{id}")
-    public String rejectVendor(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String rejectVendor(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         shopService.rejectShop(id);
         redirectAttributes.addFlashAttribute("successMessage", "Đã từ chối đơn mở cửa hàng!");
         return "redirect:/admin/vendors";
@@ -240,14 +240,14 @@ public class AdminController {
     }
 
     @PostMapping("/categories/save")
-    public String saveCategory(@ModelAttribute Category category, RedirectAttributes redirectAttributes) {
+    public String saveCategory(@ModelAttribute("category") Category category, RedirectAttributes redirectAttributes) {
         categoryService.save(category);
         redirectAttributes.addFlashAttribute("successMessage", "Lưu danh mục thành công!");
         return "redirect:/admin/categories";
     }
 
     @PostMapping("/categories/delete/{id}")
-    public String deleteCategory(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteCategory(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         try {
             categoryService.deleteById(id);
             redirectAttributes.addFlashAttribute("successMessage", "Xóa danh mục thành công!");
@@ -264,7 +264,7 @@ public class AdminController {
     }
 
     @PostMapping("/users/toggle-status/{id}")
-    public String toggleUserStatus(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String toggleUserStatus(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         userService.toggleUserStatus(id);
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật trạng thái tài khoản thành công!");
         return "redirect:/admin/users";
@@ -283,7 +283,7 @@ public class AdminController {
     }
 
     @PostMapping("/settings")
-    public String saveSettings(@ModelAttribute SiteSetting setting, RedirectAttributes redirectAttributes) {
+    public String saveSettings(@ModelAttribute("setting") SiteSetting setting, RedirectAttributes redirectAttributes) {
         siteSettingService.saveSiteSetting(setting);
         redirectAttributes.addFlashAttribute("successMessage", "Cập nhật cấu hình website thành công!");
         return "redirect:/admin/settings";
@@ -296,14 +296,14 @@ public class AdminController {
     }
 
     @PostMapping("/products/approve/{id}")
-    public String approveProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String approveProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         productService.approveProduct(id);
         redirectAttributes.addFlashAttribute("successMessage", "Phê duyệt sản phẩm thành công!");
         return "redirect:/admin/vendors";
     }
 
     @PostMapping("/products/reject/{id}")
-    public String rejectProduct(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String rejectProduct(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         productService.rejectProduct(id);
         redirectAttributes.addFlashAttribute("successMessage", "Đã từ chối sản phẩm!");
         return "redirect:/admin/vendors";

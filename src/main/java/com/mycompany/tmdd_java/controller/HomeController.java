@@ -61,10 +61,10 @@ public class HomeController {
     }
 
     @GetMapping("/products")
-    public String productCatalog(@RequestParam(required = false) Long categoryId,
-                                 @RequestParam(required = false) String keyword,
-                                 @RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "50") int size,
+    public String productCatalog(@RequestParam(name = "categoryId", required = false) Long categoryId,
+                                 @RequestParam(name = "keyword", required = false) String keyword,
+                                 @RequestParam(name = "int", defaultValue = "0") int page,
+                                 @RequestParam(name = "int", defaultValue = "50") int size,
                                  Model model) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<Product> productPage;
@@ -89,7 +89,7 @@ public class HomeController {
     }
 
     @GetMapping("/products/{id}")
-    public String productDetail(@PathVariable Long id, Model model) {
+    public String productDetail(@PathVariable("id") Long id, Model model) {
         Product product = productService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy sản phẩm id: " + id));
         
@@ -109,9 +109,9 @@ public class HomeController {
     }
 
     @GetMapping("/shops/{id}")
-    public String shopDetail(@PathVariable Long id,
-                             @RequestParam(defaultValue = "0") int page,
-                             @RequestParam(defaultValue = "50") int size,
+    public String shopDetail(@PathVariable("id") Long id,
+                             @RequestParam(name = "int", defaultValue = "0") int page,
+                             @RequestParam(name = "int", defaultValue = "50") int size,
                              Model model) {
         Shop shop = shopService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Không tìm thấy cửa hàng id: " + id));

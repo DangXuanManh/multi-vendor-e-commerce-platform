@@ -49,10 +49,10 @@ public class CheckoutController {
 
     @PostMapping("/process")
     public String processCheckout(@AuthenticationPrincipal UserDetails userDetails,
-                                  @RequestParam String recipientName,
-                                  @RequestParam String phone,
-                                  @RequestParam String address,
-                                  @RequestParam(required = false) String note,
+                                  @RequestParam("recipientName") String recipientName,
+                                  @RequestParam("phone") String phone,
+                                  @RequestParam("address") String address,
+                                  @RequestParam(name = "note", required = false) String note,
                                   HttpSession session,
                                   RedirectAttributes redirectAttributes) {
         CartDto cart = cartService.getCart(session);

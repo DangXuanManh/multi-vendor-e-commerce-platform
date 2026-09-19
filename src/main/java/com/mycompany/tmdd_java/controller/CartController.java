@@ -26,8 +26,8 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam Long productId,
-                            @RequestParam(defaultValue = "1") int quantity,
+    public String addToCart(@RequestParam("productId") Long productId,
+                            @RequestParam(name = "int", defaultValue = "1") int quantity,
                             HttpSession session,
                             RedirectAttributes redirectAttributes) {
         try {
@@ -40,15 +40,15 @@ public class CartController {
     }
 
     @PostMapping("/update")
-    public String updateQuantity(@RequestParam Long productId,
-                                 @RequestParam int quantity,
+    public String updateQuantity(@RequestParam("productId") Long productId,
+                                 @RequestParam("quantity") int quantity,
                                  HttpSession session) {
         cartService.updateQuantity(session, productId, quantity);
         return "redirect:/cart";
     }
 
     @PostMapping("/remove/{productId}")
-    public String removeFromCart(@PathVariable Long productId, HttpSession session) {
+    public String removeFromCart(@PathVariable("productId") Long productId, HttpSession session) {
         cartService.removeFromCart(session, productId);
         return "redirect:/cart";
     }
