@@ -40,7 +40,12 @@ public class AdminController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        long totalUsers = userService.findAllUsers().size();
+        List<User> allUsers = userService.findAllUsers();
+        List<Order> allOrders = orderService.findAllOrders();
+        List<Shop> allShops = shopService.findAllShops();
+        List<Category> categories = categoryService.findAll();
+
+        long totalUsers = allUsers.size();
         long totalShops = shopService.countApprovedShops();
         long pendingShops = shopService.countPendingShops();
         long totalProducts = productService.countTotalProducts();
@@ -51,6 +56,12 @@ public class AdminController {
         model.addAttribute("pendingShops", pendingShops);
         model.addAttribute("totalProducts", totalProducts);
         model.addAttribute("totalPlatformRevenue", totalPlatformRevenue);
+
+        model.addAttribute("users", allUsers);
+        model.addAttribute("orders", allOrders);
+        model.addAttribute("shops", allShops);
+        model.addAttribute("categories", categories);
+
         return "admin/dashboard";
     }
 
