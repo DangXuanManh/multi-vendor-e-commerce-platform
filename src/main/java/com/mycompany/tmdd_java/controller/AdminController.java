@@ -1,9 +1,11 @@
 package com.mycompany.tmdd_java.controller;
 
 import com.mycompany.tmdd_java.entity.Category;
+import com.mycompany.tmdd_java.entity.Order;
 import com.mycompany.tmdd_java.entity.Shop;
 import com.mycompany.tmdd_java.entity.ShopStatus;
 import com.mycompany.tmdd_java.entity.SiteSetting;
+import com.mycompany.tmdd_java.entity.User;
 import com.mycompany.tmdd_java.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
