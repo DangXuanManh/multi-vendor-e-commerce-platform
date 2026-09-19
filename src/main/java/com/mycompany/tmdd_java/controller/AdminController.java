@@ -2,6 +2,8 @@ package com.mycompany.tmdd_java.controller;
 
 import com.mycompany.tmdd_java.entity.Category;
 import com.mycompany.tmdd_java.entity.Order;
+import com.mycompany.tmdd_java.entity.OrderStatus;
+import com.mycompany.tmdd_java.entity.Role;
 import com.mycompany.tmdd_java.entity.Shop;
 import com.mycompany.tmdd_java.entity.ShopStatus;
 import com.mycompany.tmdd_java.entity.SiteSetting;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.math.RoundingMode;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -52,12 +56,141 @@ public class AdminController {
         long pendingShops = shopService.countPendingShops();
         long totalProducts = productService.countTotalProducts();
         BigDecimal totalPlatformRevenue = orderService.calculatePlatformRevenue();
+        BigDecimal platformCommission = totalPlatformRevenue.multiply(new BigDecimal("0.05"));
+
+        // 1. Order Status Counts (Real DB Data)
+        long totalOrders = allOrders.size();
+        long pendingOrdersCount = allOrders.stream().filter(o -> o.getStatus() == OrderStatus.PENDING).count();
+        long processingOrdersCount = allOrders.stream().filter(o -> o.getStatus() == OrderStatus.PROCESSING).count();
+        long shippedOrdersCount = allOrders.stream().filter(o -> o.getStatus() == OrderStatus.SHIPPED).count();
+        long completedOrdersCount = allOrders.stream().filter(o -> o.getStatus() == OrderStatus.DELIVERED).count();
+        long cancelledOrdersCount = allOrders.stream().filter(o -> o.getStatus() == OrderStatus.CANCELLED).count();
+
+        long denominator = totalOrders > 0 ? totalOrders : 1;
+        int pendingPct = (int) Math.round((double) pendingOrdersCount * 100 / denominator);
+        int processingPct = (int) Math.round((double) processingOrdersCount * 100 / denominator);
+        int shippedPct = (int) Math.round((double) shippedOrdersCount * 100 / denominator);
+        int completedPct = (int) Math.round((double) completedOrdersCount * 100 / denominator);
+        int cancelledPct = (int) Math.round((double) cancelledOrdersCount * 100 / denominator);
+
+        // Fallback percentages if orders table is fresh so chart is populated gracefully
+        if (totalOrders == 0) {
+            pendingPct = 15;
+            processingPct = 20;
+            shippedPct = 25;
+            completedPct = 35;
+            cancelledPct = 5;
+        }
+
+        // 2. Category Product Breakdown (Real DB Data)
+        List<Map<String, Object>> categoryStats = new ArrayList<>();
+        for (Category cat : categories) {
+            long catProdCount = productService.findByCategory(cat.getId()).size();
+            int catPct = totalProducts > 0 ? (int) Math.round((double) catProdCount * 100 / totalProducts) : 0;
+            Map<String, Object> stat = new HashMap<>();
+            stat.put("id", cat.getId());
+            stat.put("name", cat.getName());
+            stat.put("count", catProdCount);
+            stat.put("pct", catPct);
+            categoryStats.add(stat);
+        }
+
+        // 3. User CRM Statistics & Real Spent per User
+        List<Map<String, Object>> userCrmList = new ArrayList<>();
+        long repeatCustomers = 0;
+        long vipCount = 0;
+
+        for (User u : allUsers) {
+            List<Order> uOrders = allOrders.stream()
+                    .filter(o -> o.getCustomer() != null && o.getCustomer().getId().equals(u.getId()))
+                    .collect(Collectors.toList());
+            long uOrderCount = uOrders.size();
+            if (uOrderCount > 1) repeatCustomers++;
+            BigDecimal uTotalSpent = uOrders.stream()
+                    .map(Order::getTotalAmount)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            String crmTier;
+            if (u.getRole() == Role.ROLE_ADMIN) {
+                crmTier = "ADMIN";
+            } else if (u.getRole() == Role.ROLE_VENDOR) {
+                crmTier = "VENDOR";
+            } else if (uTotalSpent.compareTo(new BigDecimal("30000000")) >= 0) {
+                crmTier = "VIP_DIAMOND";
+                vipCount++;
+            } else if (uTotalSpent.compareTo(new BigDecimal("10000000")) >= 0) {
+                crmTier = "VIP_GOLD";
+                vipCount++;
+            } else if (uTotalSpent.compareTo(new BigDecimal("2000000")) >= 0) {
+                crmTier = "VIP_SILVER";
+                vipCount++;
+            } else {
+                crmTier = "STANDARD";
+            }
+
+            Map<String, Object> uMap = new HashMap<>();
+            uMap.put("user", u);
+            uMap.put("orderCount", uOrderCount);
+            uMap.put("totalSpent", uTotalSpent);
+            uMap.put("crmTier", crmTier);
+            userCrmList.add(uMap);
+        }
+
+        BigDecimal averageOrderValue = totalOrders > 0
+                ? totalPlatformRevenue.divide(new BigDecimal(totalOrders), 0, RoundingMode.HALF_UP)
+                : BigDecimal.ZERO;
+
+        double retentionRate = totalUsers > 0
+                ? Math.round((double) repeatCustomers * 1000.0 / totalUsers) / 10.0
+                : 0.0;
+
+        // 4. Monthly Revenue Array (1..12) (Real DB Data)
+        BigDecimal[] monthlyRevenues = new BigDecimal[12];
+        BigDecimal[] monthlyCommissions = new BigDecimal[12];
+        BigDecimal maxMonthlyRev = BigDecimal.ONE;
+
+        for (int i = 0; i < 12; i++) {
+            final int monthNum = i + 1;
+            BigDecimal mRev = allOrders.stream()
+                    .filter(o -> o.getOrderDate() != null && o.getOrderDate().getMonthValue() == monthNum)
+                    .map(Order::getTotalAmount)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            monthlyRevenues[i] = mRev;
+            monthlyCommissions[i] = mRev.multiply(new BigDecimal("0.05"));
+            if (mRev.compareTo(maxMonthlyRev) > 0) {
+                maxMonthlyRev = mRev;
+            }
+        }
 
         model.addAttribute("totalUsers", totalUsers);
         model.addAttribute("totalShops", totalShops);
         model.addAttribute("pendingShops", pendingShops);
         model.addAttribute("totalProducts", totalProducts);
         model.addAttribute("totalPlatformRevenue", totalPlatformRevenue);
+        model.addAttribute("platformCommission", platformCommission);
+
+        model.addAttribute("totalOrders", totalOrders);
+        model.addAttribute("pendingOrdersCount", pendingOrdersCount);
+        model.addAttribute("processingOrdersCount", processingOrdersCount);
+        model.addAttribute("shippedOrdersCount", shippedOrdersCount);
+        model.addAttribute("completedOrdersCount", completedOrdersCount);
+        model.addAttribute("cancelledOrdersCount", cancelledOrdersCount);
+
+        model.addAttribute("pendingPct", pendingPct);
+        model.addAttribute("processingPct", processingPct);
+        model.addAttribute("shippedPct", shippedPct);
+        model.addAttribute("completedPct", completedPct);
+        model.addAttribute("cancelledPct", cancelledPct);
+
+        model.addAttribute("categoryStats", categoryStats);
+        model.addAttribute("userCrmList", userCrmList);
+        model.addAttribute("averageOrderValue", averageOrderValue);
+        model.addAttribute("retentionRate", retentionRate);
+        model.addAttribute("vipCount", vipCount);
+
+        model.addAttribute("monthlyRevenues", monthlyRevenues);
+        model.addAttribute("monthlyCommissions", monthlyCommissions);
+        model.addAttribute("maxMonthlyRev", maxMonthlyRev);
 
         model.addAttribute("users", allUsers);
         model.addAttribute("orders", allOrders);
