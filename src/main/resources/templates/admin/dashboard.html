@@ -5,9 +5,6 @@
     <div th:replace="~{layout/main :: navbar}"></div>
     <div th:replace="~{layout/main :: alerts}"></div>
 
-    <!-- Load Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <div class="container main-content mt-4">
         <!-- Admin Header Banner -->
         <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-dark text-white">
@@ -17,8 +14,8 @@
                         <i class="fa-solid fa-user-shield"></i>
                     </div>
                     <div>
-                        <h3 class="fw-bold mb-0">Hệ Thống Quản Trị Sàn TMĐT & CRM</h3>
-                        <small class="text-light-50">Chào mừng Quản trị viên hệ thống | Báo cáo doanh số & Chăm sóc khách hàng</small>
+                        <h3 class="fw-bold mb-0">Hệ Thống Quản Trị Sàn TMĐT &amp; CRM</h3>
+                        <small class="text-light-50">Chào mừng Quản trị viên hệ thống | Báo cáo doanh số &amp; Chăm sóc khách hàng</small>
                     </div>
                 </div>
                 <div>
@@ -30,7 +27,7 @@
         <!-- Navigation Tabs -->
         <ul class="nav nav-pills mb-4 gap-2">
             <li class="nav-item">
-                <a class="nav-link active rounded-pill px-4" href="/admin/dashboard"><i class="fa-solid fa-chart-line me-2"></i>Tổng Quan & CRM</a>
+                <a class="nav-link active rounded-pill px-4" href="/admin/dashboard"><i class="fa-solid fa-chart-line me-2"></i>Tổng Quan &amp; CRM</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link bg-white text-dark shadow-sm rounded-pill px-4" href="/admin/vendors"><i class="fa-solid fa-store me-2 text-primary"></i>Duyệt Cửa Hàng</a>
@@ -100,31 +97,167 @@
 
         <!-- SECTION 1: INTERACTIVE CHARTS & ANALYTICS -->
         <div class="row g-4 mb-4">
-            <!-- Line/Bar Chart: Monthly Revenue & Platform Commission -->
+            <!-- SVG Bar & Line Chart: Monthly Revenue & Platform Commission -->
             <div class="col-lg-8">
                 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
                             <h5 class="fw-bold text-slate-800 mb-0"><i class="fa-solid fa-chart-area text-primary me-2"></i>Biểu Đồ Doanh Số &amp; Hoa Hồng Sàn Theo Tháng (2026)</h5>
-                            <small class="text-muted">Theo dõi tăng trưởng doanh thu thực tế và chiết khấu sàn 5%</small>
+                            <small class="text-muted">Tăng trưởng doanh thu toàn sàn (Cột xanh) &amp; Phí hoa hồng 5% (Đường xanh lá)</small>
                         </div>
                         <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold"><i class="fa-solid fa-calendar-days me-1"></i>Năm 2026</span>
                     </div>
-                    <div style="height: 320px; position: relative;">
-                        <canvas id="revenueChart"></canvas>
+
+                    <!-- Legend -->
+                    <div class="d-flex gap-4 mb-2 small fw-bold justify-content-center">
+                        <div class="d-flex align-items-center gap-2">
+                            <span style="display:inline-block; width:16px; height:12px; background-color:#2563eb; border-radius:3px;"></span>
+                            <span>Doanh Số Sàn (VNĐ)</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span style="display:inline-block; width:16px; height:4px; background-color:#10b981; border-radius:2px;"></span>
+                            <span>Hoa Hồng Sàn 5% (VNĐ)</span>
+                        </div>
+                    </div>
+
+                    <!-- SVG Interactive Chart -->
+                    <div class="w-100" style="height: 300px;">
+                        <svg viewBox="0 0 900 320" preserveAspectRatio="none" style="width:100%; height:100%;">
+                            <!-- Grid lines -->
+                            <line x1="60" y1="40" x2="880" y2="40" stroke="#f1f5f9" stroke-width="1"/>
+                            <line x1="60" y1="95" x2="880" y2="95" stroke="#f1f5f9" stroke-width="1"/>
+                            <line x1="60" y1="150" x2="880" y2="150" stroke="#f1f5f9" stroke-width="1"/>
+                            <line x1="60" y1="205" x2="880" y2="205" stroke="#f1f5f9" stroke-width="1"/>
+                            <line x1="60" y1="260" x2="880" y2="260" stroke="#e2e8f0" stroke-width="2"/>
+
+                            <!-- Y Axis Labels -->
+                            <text x="50" y="45" font-size="11" fill="#64748b" text-anchor="end">400 Tr</text>
+                            <text x="50" y="100" font-size="11" fill="#64748b" text-anchor="end">300 Tr</text>
+                            <text x="50" y="155" font-size="11" fill="#64748b" text-anchor="end">200 Tr</text>
+                            <text x="50" y="210" font-size="11" fill="#64748b" text-anchor="end">100 Tr</text>
+                            <text x="50" y="265" font-size="11" fill="#64748b" text-anchor="end">0 đ</text>
+
+                            <!-- Bars for Monthly Sales (12 Months) -->
+                            <rect x="80" y="252" width="30" height="8" rx="4" fill="#3b82f6"><title>Tháng 1: 15.000.000 đ</title></rect>
+                            <rect x="146" y="245" width="30" height="15" rx="4" fill="#3b82f6"><title>Tháng 2: 28.000.000 đ</title></rect>
+                            <rect x="212" y="237" width="30" height="23" rx="4" fill="#3b82f6"><title>Tháng 3: 42.000.000 đ</title></rect>
+                            <rect x="278" y="230" width="30" height="30" rx="4" fill="#3b82f6"><title>Tháng 4: 55.000.000 đ</title></rect>
+                            <rect x="344" y="223" width="30" height="37" rx="4" fill="#3b82f6"><title>Tháng 5: 68.000.000 đ</title></rect>
+                            <rect x="410" y="219" width="30" height="41" rx="4" fill="#3b82f6"><title>Tháng 6: 75.000.000 đ</title></rect>
+                            <rect x="476" y="211" width="30" height="49" rx="4" fill="#3b82f6"><title>Tháng 7: 89.000.000 đ</title></rect>
+                            <rect x="542" y="209" width="30" height="51" rx="4" fill="#3b82f6"><title>Tháng 8: 92.000.000 đ</title></rect>
+                            <rect x="608" y="198" width="30" height="62" rx="4" fill="#3b82f6"><title>Tháng 9: 112.000.000 đ</title></rect>
+                            <rect x="674" y="186" width="30" height="74" rx="4" fill="#3b82f6"><title>Tháng 10: 135.000.000 đ</title></rect>
+                            <rect x="740" y="172" width="30" height="88" rx="4" fill="#3b82f6"><title>Tháng 11: 160.000.000 đ</title></rect>
+                            <rect x="806" y="33" width="30" height="227" rx="4" fill="#2563eb"><title>Tháng 12: 412.180.000 đ</title></rect>
+                            
+                            <!-- Highlight value above T12 bar -->
+                            <text x="821" y="25" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="middle">412.18M</text>
+
+                            <!-- Polyline Line Chart for 5% Platform Commission -->
+                            <polyline points="
+                                95,257
+                                161,254
+                                227,249
+                                293,245
+                                359,241
+                                425,239
+                                491,235
+                                557,234
+                                623,228
+                                689,221
+                                755,213
+                                821,147
+                            " fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+                            <!-- Line Points -->
+                            <circle cx="95" cy="257" r="4" fill="#10b981"/>
+                            <circle cx="161" cy="254" r="4" fill="#10b981"/>
+                            <circle cx="227" cy="249" r="4" fill="#10b981"/>
+                            <circle cx="293" cy="245" r="4" fill="#10b981"/>
+                            <circle cx="359" cy="241" r="4" fill="#10b981"/>
+                            <circle cx="425" cy="239" r="4" fill="#10b981"/>
+                            <circle cx="491" cy="235" r="4" fill="#10b981"/>
+                            <circle cx="557" cy="234" r="4" fill="#10b981"/>
+                            <circle cx="623" cy="228" r="4" fill="#10b981"/>
+                            <circle cx="689" cy="221" r="4" fill="#10b981"/>
+                            <circle cx="755" cy="213" r="4" fill="#10b981"/>
+                            <circle cx="821" cy="147" r="6" fill="#10b981" stroke="#ffffff" stroke-width="2"/>
+
+                            <!-- X Axis Month Labels -->
+                            <text x="95" y="282" font-size="11" fill="#475569" text-anchor="middle">T1</text>
+                            <text x="161" y="282" font-size="11" fill="#475569" text-anchor="middle">T2</text>
+                            <text x="227" y="282" font-size="11" fill="#475569" text-anchor="middle">T3</text>
+                            <text x="293" y="282" font-size="11" fill="#475569" text-anchor="middle">T4</text>
+                            <text x="359" y="282" font-size="11" fill="#475569" text-anchor="middle">T5</text>
+                            <text x="425" y="282" font-size="11" fill="#475569" text-anchor="middle">T6</text>
+                            <text x="491" y="282" font-size="11" fill="#475569" text-anchor="middle">T7</text>
+                            <text x="557" y="282" font-size="11" fill="#475569" text-anchor="middle">T8</text>
+                            <text x="623" y="282" font-size="11" fill="#475569" text-anchor="middle">T9</text>
+                            <text x="689" y="282" font-size="11" fill="#475569" text-anchor="middle">T10</text>
+                            <text x="755" y="282" font-size="11" fill="#475569" text-anchor="middle">T11</text>
+                            <text x="821" y="282" font-size="11" font-weight="bold" fill="#2563eb" text-anchor="middle">T12</text>
+                        </svg>
                     </div>
                 </div>
             </div>
 
             <!-- Doughnut Chart: Order Status Distribution -->
             <div class="col-lg-4">
-                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-                    <div class="mb-3">
-                        <h5 class="fw-bold text-slate-800 mb-0"><i class="fa-solid fa-chart-pie text-danger me-2"></i>Cơ Cấu Trạng Thái Đơn Hàng</h5>
-                        <small class="text-muted">Tỷ lệ phân bổ đơn hàng trên hệ thống</small>
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="mb-3">
+                            <h5 class="fw-bold text-slate-800 mb-0"><i class="fa-solid fa-chart-pie text-danger me-2"></i>Cơ Cấu Trạng Thái Đơn Hàng</h5>
+                            <small class="text-muted">Tỷ lệ phân bổ đơn hàng trên hệ thống sàn</small>
+                        </div>
+
+                        <!-- SVG Doughnut Chart -->
+                        <div class="d-flex justify-content-center align-items-center py-2">
+                            <svg width="180" height="180" viewBox="0 0 42 42" class="donut">
+                                <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                                <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#e2e8f0" stroke-width="5"></circle>
+                                
+                                <!-- Segment 1: Giao Thành Công (35%) green -->
+                                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#10b981" stroke-width="5" stroke-dasharray="35 65" stroke-dashoffset="25"></circle>
+                                <!-- Segment 2: Đang Giao Hàng (25%) cyan -->
+                                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#06b6d4" stroke-width="5" stroke-dasharray="25 75" stroke-dashoffset="90"></circle>
+                                <!-- Segment 3: Đang Đóng Gói (20%) blue -->
+                                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#3b82f6" stroke-width="5" stroke-dasharray="20 80" stroke-dashoffset="65"></circle>
+                                <!-- Segment 4: Chờ Xác Nhận (15%) warning -->
+                                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#f59e0b" stroke-width="5" stroke-dasharray="15 85" stroke-dashoffset="45"></circle>
+                                <!-- Segment 5: Đã Hủy (5%) red -->
+                                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#ef4444" stroke-width="5" stroke-dasharray="5 95" stroke-dashoffset="30"></circle>
+                                
+                                <g class="chart-text">
+                                    <text x="50%" y="46%" class="chart-number" font-size="6" font-weight="bold" fill="#1e293b" text-anchor="middle">100%</text>
+                                    <text x="50%" y="62%" class="chart-label" font-size="3" fill="#64748b" text-anchor="middle">Hoàn Tất</text>
+                                </g>
+                            </svg>
+                        </div>
                     </div>
-                    <div style="height: 280px; position: relative;" class="d-flex align-items-center justify-content-center">
-                        <canvas id="orderStatusChart"></canvas>
+
+                    <!-- Doughnut Legend Breakdown -->
+                    <div class="mt-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1 fs-6">
+                            <span><i class="fa-solid fa-circle text-success me-2"></i>Giao Thành Công</span>
+                            <span class="fw-bold">35%</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-1 fs-6">
+                            <span><i class="fa-solid fa-circle text-info me-2"></i>Đang Giao Hàng</span>
+                            <span class="fw-bold">25%</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-1 fs-6">
+                            <span><i class="fa-solid fa-circle text-primary me-2"></i>Đang Đóng Gói</span>
+                            <span class="fw-bold">20%</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-1 fs-6">
+                            <span><i class="fa-solid fa-circle text-warning me-2"></i>Chờ Xác Nhận</span>
+                            <span class="fw-bold">15%</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center fs-6">
+                            <span><i class="fa-solid fa-circle text-danger me-2"></i>Đã Hủy</span>
+                            <span class="fw-bold">5%</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -134,15 +267,79 @@
         <div class="row g-4 mb-4">
             <div class="col-12">
                 <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
                         <div>
                             <h5 class="fw-bold text-slate-800 mb-0"><i class="fa-solid fa-chart-bar text-success me-2"></i>Thống Kê Sản Phẩm &amp; Thị Phần Theo Danh Mục</h5>
-                            <small class="text-muted">Số lượng sản phẩm và tỷ trọng kinh doanh theo ngành hàng</small>
+                            <small class="text-muted">Số lượng sản phẩm và tỷ trọng kinh doanh theo ngành hàng trên sàn</small>
                         </div>
                         <a href="/admin/categories" class="btn btn-sm btn-outline-success rounded-pill px-3"><i class="fa-solid fa-layer-group me-1"></i>Quản Lý Danh Mục</a>
                     </div>
-                    <div style="height: 250px; position: relative;">
-                        <canvas id="categoryChart"></canvas>
+
+                    <!-- Modern Progress Bar Categories -->
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold text-slate-700"><i class="fa-solid fa-mobile-screen me-2 text-primary"></i>Điện Thoại &amp; Tablet</span>
+                                    <span class="fw-bold text-primary">68 Sản phẩm (35%)</span>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 12px;">
+                                    <div class="progress-bar bg-primary rounded-pill" role="progressbar" style="width: 35%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold text-slate-700"><i class="fa-solid fa-laptop me-2 text-success"></i>Máy Tính &amp; Laptop</span>
+                                    <span class="fw-bold text-success">54 Sản phẩm (28%)</span>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 12px;">
+                                    <div class="progress-bar bg-success rounded-pill" role="progressbar" style="width: 28%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold text-slate-700"><i class="fa-solid fa-headphones me-2 text-info"></i>Phụ Kiện Công Nghệ</span>
+                                    <span class="fw-bold text-info">42 Sản phẩm (22%)</span>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 12px;">
+                                    <div class="progress-bar bg-info rounded-pill" role="progressbar" style="width: 22%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold text-slate-700"><i class="fa-solid fa-shirt me-2 text-warning"></i>Thời Trang &amp; Phụ Kiện</span>
+                                    <span class="fw-bold text-warning">35 Sản phẩm (18%)</span>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 12px;">
+                                    <div class="progress-bar bg-warning rounded-pill" role="progressbar" style="width: 18%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold text-slate-700"><i class="fa-solid fa-house-laptop me-2 text-danger"></i>Đồ Gia Dụng Thông Minh</span>
+                                    <span class="fw-bold text-danger">31 Sản phẩm (16%)</span>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 12px;">
+                                    <div class="progress-bar bg-danger rounded-pill" role="progressbar" style="width: 16%"></div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="fw-bold text-slate-700"><i class="fa-solid fa-tv me-2 text-secondary"></i>Thiết Bị Điện Tử Khác</span>
+                                    <span class="fw-bold text-secondary">29 Sản phẩm (15%)</span>
+                                </div>
+                                <div class="progress rounded-pill" style="height: 12px;">
+                                    <div class="progress-bar bg-secondary rounded-pill" role="progressbar" style="width: 15%"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -326,122 +523,6 @@
             </div>
         </div>
     </div>
-
-    <!-- SCRIPT FOR INITIALIZING CHART.JS INTERACTIVE CHARTS -->
-    <script th:inline="javascript">
-        document.addEventListener('DOMContentLoaded', function() {
-            // 1. Line / Bar Chart: Monthly Revenue & Platform Commission
-            const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
-            new Chart(ctxRevenue, {
-                type: 'bar',
-                data: {
-                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-                    datasets: [
-                        {
-                            label: 'Tổng Doanh Số Sàn (VNĐ)',
-                            data: [15000000, 28000000, 42000000, 55000000, 68000000, 75000000, 89000000, 92000000, 112000000, 135000000, 160000000, 412180000],
-                            backgroundColor: 'rgba(37, 99, 235, 0.75)',
-                            borderColor: '#2563eb',
-                            borderWidth: 1,
-                            borderRadius: 6
-                        },
-                        {
-                            label: 'Hoa Hồng Chiết Khấu Sàn 5% (VNĐ)',
-                            data: [750000, 1400000, 2100000, 2750000, 3400000, 3750000, 4450000, 4600000, 5600000, 6750000, 8000000, 20609000],
-                            type: 'line',
-                            borderColor: '#10b981',
-                            backgroundColor: '#10b981',
-                            borderWidth: 3,
-                            pointRadius: 5,
-                            fill: false
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'top' },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) label += ': ';
-                                    if (context.parsed.y !== null) {
-                                        label += new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(context.parsed.y);
-                                    }
-                                    return label;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return (value / 1000000).toFixed(0) + ' Tr';
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-
-            // 2. Doughnut Chart: Order Status Distribution
-            const ctxStatus = document.getElementById('orderStatusChart').getContext('2d');
-            new Chart(ctxStatus, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Đang Chờ Xác Nhận', 'Đang Đóng Gói', 'Đang Giao Hàng', 'Giao Thành Công', 'Đã Hủy'],
-                    datasets: [{
-                        data: [15, 20, 25, 35, 5],
-                        backgroundColor: ['#f59e0b', '#3b82f6', '#06b6d4', '#10b981', '#ef4444'],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
-                }
-            });
-
-            // 3. Bar Chart: Category Product Distribution
-            const ctxCategory = document.getElementById('categoryChart').getContext('2d');
-            new Chart(ctxCategory, {
-                type: 'bar',
-                data: {
-                    labels: ['Điện Thoại & Tablet', 'Máy Tính & Laptop', 'Phụ Kiện Công Nghệ', 'Thời Trang', 'Đồ Gia Dụng', 'Thiết Bị Âm Thanh'],
-                    datasets: [{
-                        label: 'Số Lượng Sản Phẩm Theo Danh Mục',
-                        data: [42, 35, 68, 54, 29, 31],
-                        backgroundColor: [
-                            'rgba(37, 99, 235, 0.8)',
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(245, 158, 11, 0.8)',
-                            'rgba(239, 68, 68, 0.8)',
-                            'rgba(139, 92, 246, 0.8)',
-                            'rgba(6, 182, 212, 0.8)'
-                        ],
-                        borderRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-        });
-    </script>
 
     <div th:replace="~{layout/main :: footer}"></div>
 </body>
